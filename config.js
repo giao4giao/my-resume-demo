@@ -1,17 +1,17 @@
-const resumeConfig = {
-    "avatar": null, // 新增头像字段
-    "name": "张三",
-    "title": "机械制造及其自动化专业求职者",
-    "phone": "123-4567-8901",
-    "email": "zhangsan@email.com",
-    "address": "北京市海淀区",
-    "school": "北京理工大学",
-    "major": "机械制造及其自动化",
-    "degree": "本科学位",
-    "edu-time": "2018年9月 - 2022年6月",
-    "gpa": "3.8/4.0",
-    "courses": "机械设计、数控技术、自动化控制系统、工程材料学",
-    "skills": [
+window.resumeConfig = {
+    "avatar": null, // 头像字段，初始为null
+    "name": "张三", // 默认姓名
+    "title": "机械制造及其自动化专业求职者", // 默认职位
+    "phone": "123-4567-8901", // 默认电话
+    "email": "zhangsan@email.com", // 默认邮箱
+    "address": "北京市海淀区", // 默认地址
+    "school": "北京理工大学", // 默认学校
+    "major": "机械制造及其自动化", // 默认专业
+    "degree": "本科学位", // 默认学位
+    "edu-time": "2018年9月 - 2022年6月", // 默认教育时间
+    "gpa": "3.8/4.0", // 默认GPA
+    "courses": "机械设计、数控技术、自动化控制系统、工程材料学", // 默认相关课程
+    "skills": [ // 默认技能列表
         "CAD/CAM软件: SolidWorks, AutoCAD, CATIA",
         "编程语言: C++, Python",
         "数控机床操作与编程",
@@ -19,28 +19,28 @@ const resumeConfig = {
         "自动化系统集成",
         "精通Office软件套件"
     ],
-    "company": "ABC机械制造有限公司",
-    "position": "实习生",
-    "intern-time": "2021年7月 - 2021年9月",
-    "intern-responsibilities": [
+    "company": "ABC机械制造有限公司", // 默认公司
+    "position": "实习生", // 默认职位
+    "intern-time": "2021年7月 - 2021年9月", // 默认实习时间
+    "intern-responsibilities": [ // 默认实习责任
         "参与设计和优化生产线自动化系统,提高生产效率15%",
         "使用SolidWorks进行3D建模,协助完成新产品设计",
         "编写数控程序,操作CNC机床加工零件"
     ],
-    "project-name": "智能仓储机器人设计",
-    "project-type": "团队项目",
-    "project-time": "2022年3月 - 2022年6月",
-    "project-details": [
+    "project-name": "智能仓储机器人设计", // 默认项目名称
+    "project-type": "团队项目", // 默认项目类型
+    "project-time": "2022年3月 - 2022年6月", // 默认项目时间
+    "project-details": [ // 默认项目详情
         "设计并制造了一款用于仓储管理的自主移动机器人",
         "负责机械结构设计和运动控制系统开发",
         "项目获得校级创新设计大赛二等奖"
     ],
-    "awards": [
+    "awards": [ // 默认奖项列表
         "机械设计工程师资格证书 (2022年)",
         "全国大学生机械创新设计大赛省级三等奖 (2021年)",
         "CET-6英语证书"
     ],
-    "traits": [
+    "traits": [ // 默认个人特质列表
         "强烈的学习欲望和创新精神",
         "优秀的团队协作能力",
         "良好的沟通和解决问题的能力",
