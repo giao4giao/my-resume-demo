@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 获取版本号
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+      - name: 读取版本描述
+        id: get_description
+        run: |
+          description=$(cat CHANGELOG.md | sed -n "/^## ${GITHUB_REF#refs/tags/}/,/^## /p" | sed '1d;$d')
+          description="${description//'%'/'%25'}"
+          description="${description//$'\n'/'%0A'}"
+          description="${description//$'\r'/'%0D'}"
+          echo ::set-output name=DESCRIPTION::$description
+      - name: 创建发布包
+        run: |
+          zip -r release.zip . -x "*.git*"
+      - name: 创建Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          body: ${{ steps.get_description.outputs.DESCRIPTION }}
+          draft: false
+          prerelease: false
+      - name: 上传Release资产
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release.zip
+          asset_name: release-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
