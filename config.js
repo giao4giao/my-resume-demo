@@ -47,3 +47,70 @@ const resumeConfig = {
         "注重细节,工作认真负责"
     ]
 };
+
+const resumeTemplates = {
+    "template1": {
+        "name": "模板一",
+        "preview": "images/template1_preview.png",
+        "config": {
+            "avatar": null,
+            "name": "张三",
+            "title": "机械制造及其自动化专业求职者",
+            // ... 其他字段保持不变
+        }
+    },
+    "template2": {
+        "name": "模板二",
+        "preview": "images/template2_preview.png",
+        "config": {
+            "avatar": null,
+            "name": "李四",
+            "title": "平面设计师",
+            "phone": "123-4567-8901",
+            "email": "lisi@email.com",
+            "address": "上海市浦东新区",
+            "school": "上海设计学院",
+            "major": "视觉传达设计",
+            "degree": "本科学位",
+            "edu-time": "2019年9月 - 2023年6月",
+            "gpa": "3.7/4.0",
+            "courses": "平面设计、品牌设计、UI/UX设计、摄影",
+            "skills": [
+                "Adobe Creative Suite: Photoshop, Illustrator, InDesign",
+                "UI设计工具: Sketch, Figma",
+                "3D建模: Cinema 4D",
+                "摄影与后期处理",
+                "品牌识别设计",
+                "网页设计与前端开发基础"
+            ],
+            "company": "XYZ创意设计工作室",
+            "position": "实习设计师",
+            "intern-time": "2022年7月 - 2022年9月",
+            "intern-responsibilities": [
+                "参与品牌视觉识别系统设计，提升品牌认知度20%",
+                "设计并制作宣传海报、广告横幅和社交媒体图片",
+                "协助完成客户网站的UI设计，优化用户体验"
+            ],
+            "project-name": "城市文化艺术节视觉设计",
+            "project-type": "个人项目",
+            "project-time": "2023年3月 - 2023年5月",
+            "project-details": [
+                "独立完成艺术节的整体视觉形象设计，包括logo、海报和宣传物料",
+                "设计制作了响应式活动官网，提高了用户参与度",
+                "项目获得学院年度设计大赛一等奖"
+            ],
+            "awards": [
+                "全国大学生广告艺术大赛省级二等奖 (2022年)",
+                "Adobe设计大赛新锐设计师奖 (2023年)",
+                "PANTONE色彩设计认证"
+            ],
+            "traits": [
+                "创新思维和强烈的审美能力",
+                "优秀的视觉传达和沟通能力",
+                "善于团队协作，乐于接受挑战",
+                "对设计趋势保持敏感，持续学习新技术"
+            ]
+        }
+    }
+    // 可以继续添加更多模板...
+};

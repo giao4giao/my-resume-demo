@@ -1,8 +1,10 @@
 let currentResumeId = null;
+let selectedTemplate = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     loadResumeList();
-    document.getElementById('create-resume-btn').addEventListener('click', createNewResume);
+    document.getElementById('create-resume-btn').addEventListener('click', showTemplateSelector);
+    document.getElementById('confirm-template').addEventListener('click', createNewResume);
     document.getElementById('save-btn').addEventListener('click', saveCurrentResume);
     document.getElementById('download-btn').addEventListener('click', downloadPDF);
     document.getElementById('back-btn').addEventListener('click', showResumeList);
@@ -11,7 +13,152 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('cancel-advanced-edit-btn').addEventListener('click', hideAdvancedEditor);
     document.getElementById('add-avatar-btn').addEventListener('click', triggerAvatarUpload);
     document.getElementById('avatar-input').addEventListener('change', handleAvatarUpload);
+    document.getElementById('change-template-btn').addEventListener('click', showTemplateSelector);
+
+    // 填充模板选择器
+    const templateSelect = document.getElementById('template-select');
+    for (let key in resumeTemplates) {
+        let option = document.createElement('option');
+        option.value = key;
+        option.textContent = resumeTemplates[key].name;
+        templateSelect.appendChild(option);
+    }
 });
+
+function showTemplateSelector() {
+    const resumeEditor = document.getElementById('resume-editor');
+    const templateSelector = document.getElementById('template-selector');
+    
+    resumeEditor.classList.add('fade-out');
+    setTimeout(() => {
+        resumeEditor.style.display = 'none';
+        templateSelector.style.display = 'block';
+        templateSelector.classList.add('fade-in');
+        setTimeout(() => {
+            templateSelector.classList.add('visible');
+        }, 50);
+        
+        // 清空并重新填充模板选择器
+        const templateSelect = document.getElementById('template-select');
+        templateSelect.innerHTML = '';
+        for (let key in resumeTemplates) {
+            let option = document.createElement('option');
+            option.value = key;
+            option.textContent = resumeTemplates[key].name;
+            templateSelect.appendChild(option);
+        }
+        
+        // 添加预览图片
+        updateTemplatePreview();
+        
+        // 监听模板选择变化
+        templateSelect.addEventListener('change', updateTemplatePreview);
+    }, 300);
+}
+
+function updateTemplatePreview() {
+    const templateKey = document.getElementById('template-select').value;
+    const previewContainer = document.getElementById('template-preview-container');
+    previewContainer.innerHTML = '';
+
+    if (resumeTemplates[templateKey].preview) {
+        const previewImg = document.createElement('img');
+        previewImg.id = 'template-preview';
+        previewImg.alt = "模板预览";
+        previewImg.style.maxWidth = '100%';
+        
+        previewImg.onerror = function() {
+            console.error('模板预览图加载失败：', resumeTemplates[templateKey].preview);
+            createDefaultPreview(previewContainer);
+        };
+        
+        previewImg.onload = function() {
+            console.log('模板预览图加载成功：', this.src);
+        };
+        
+        console.log('尝试加载预览图：', resumeTemplates[templateKey].preview);
+        previewImg.src = resumeTemplates[templateKey].preview;
+        previewContainer.appendChild(previewImg);
+    } else {
+        createDefaultPreview(previewContainer);
+    }
+}
+
+function createDefaultPreview(container) {
+    const defaultPreview = document.createElement('div');
+    defaultPreview.className = 'default-preview';
+    defaultPreview.innerHTML = `
+        <div class="preview-icon">
+            <div class="preview-lines"></div>
+        </div>
+        <p>预览不可用</p>
+    `;
+    container.appendChild(defaultPreview);
+}
+
+function createNewResume() {
+    const templateKey = document.getElementById('template-select').value;
+    applyTemplate(templateKey);
+}
+
+function applyTemplate(templateKey) {
+    const newTemplate = resumeTemplates[templateKey].config;
+    
+    const resumes = JSON.parse(localStorage.getItem('resumes')) || [];
+    let currentResume;
+    if (currentResumeId) {
+        currentResume = resumes.find(r => r.id === currentResumeId);
+        // 保留用户已编辑的内容
+        for (let key in newTemplate) {
+            if (!currentResume[key]) {
+                currentResume[key] = newTemplate[key];
+            }
+        }
+        currentResume.template = templateKey; // 更新模板标识
+    } else {
+        currentResume = JSON.parse(JSON.stringify(newTemplate));
+        currentResume.id = Date.now();
+        currentResume.template = templateKey;
+        resumes.push(currentResume);
+    }
+    
+    localStorage.setItem('resumes', JSON.stringify(resumes));
+    
+    currentResumeId = currentResume.id;
+    
+    const templateSelector = document.getElementById('template-selector');
+    const resumeEditor = document.getElementById('resume-editor');
+    
+    templateSelector.classList.remove('visible');
+    templateSelector.classList.add('fade-out');
+    setTimeout(() => {
+        templateSelector.style.display = 'none';
+        resumeEditor.style.display = 'block';
+        resumeEditor.classList.add('fade-in');
+        
+        // 加载对应的 CSS 样式
+        loadTemplateStyle(templateKey);
+        
+        // 填充简历内容
+        fillResumeContent(currentResume);
+        
+        setTimeout(() => {
+            resumeEditor.classList.add('visible');
+        }, 50);
+    }, 300);
+}
+
+function loadTemplateStyle(templateKey) {
+    const linkId = 'template-style';
+    let styleLink = document.getElementById(linkId);
+    if (!styleLink) {
+        styleLink = document.createElement('link');
+        styleLink.id = linkId;
+        styleLink.rel = 'stylesheet';
+        document.head.appendChild(styleLink);
+    }
+    styleLink.href = `styles/${templateKey}.css`;
+}
 
 function loadResumeList() {
     const resumeList = document.getElementById('resume-list');
@@ -31,15 +178,6 @@ function loadResumeList() {
     });
 }
 
-function createNewResume() {
-    const resumes = JSON.parse(localStorage.getItem('resumes')) || [];
-    const newResume = JSON.parse(JSON.stringify(resumeConfig));
-    newResume.id = Date.now();
-    resumes.push(newResume);
-    localStorage.setItem('resumes', JSON.stringify(resumes));
-    loadResumeList();
-}
-
 function editResume(index) {
     const resumes = JSON.parse(localStorage.getItem('resumes')) || [];
     currentResumeId = resumes[index].id;
@@ -57,6 +195,7 @@ function deleteResume(index) {
 
 function fillResumeContent(resumeData) {
     const resumeContent = document.getElementById('resume-content');
+    resumeContent.className = `resume-content ${resumeData.template || 'template1'}`;
     resumeContent.innerHTML = `
         <div class="resume-header">
             ${resumeData.avatar ? 

@@ -145,3 +145,62 @@ button:hover {
     color: #777;
     cursor: pointer;
 }
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.default-preview {
+    width: 300px;
+    height: 200px;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px auto;
+}
+
+.preview-icon {
+    width: 60px;
+    height: 80px;
+    background-color: #fff;
+    border: 2px solid #808080;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.preview-lines {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    right: 5px;
+}
+
+.preview-lines::before,
+.preview-lines::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: #808080;
+    margin-bottom: 5px;
+}
+
+.default-preview p {
+    margin: 0;
+    color: #808080;
+    font-size: 16px;
+    font-weight: bold;
+}

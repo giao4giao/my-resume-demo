@@ -1,0 +1,20 @@
+/* 创意模板样式 */
+.resume-content.template2 {
+    font-family: 'Helvetica Neue', sans-serif;
+    line-height: 1.8;
+    color: #2c3e50;
+}
+
+.template2 .resume-header {
+    background-color: #3498db;
+    color: white;
+    padding: 30px;
+}
+
+.template2 .section-title {
+    color: #3498db;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+/* ... 添加更多样式 */
