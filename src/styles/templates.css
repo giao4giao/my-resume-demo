@@ -1,0 +1,305 @@
+/* 默认模板样式 */
+.default {
+    font-family: Arial, sans-serif;
+}
+
+/* 现代模板样式 */
+.modern {
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+}
+
+.modern .resume-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 50px 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.modern .name-title h1 {
+    font-size: 2.8em;
+    margin-bottom: 5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.modern .name-title p {
+    font-size: 1.4em;
+    opacity: 0.9;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.modern .section-title {
+    color: #2c3e50;
+    font-size: 1.8em;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    position: relative;
+    font-weight: 600;
+}
+
+.modern .section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: #3498db;
+}
+
+.modern .skills ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+.modern .skills li {
+    background-color: #3498db;
+    color: white;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.modern .skills li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.modern .info-item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.modern .info-item strong {
+    min-width: 120px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.modern .resume-section {
+    background-color: white;
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.modern .contact-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.modern .contact-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.modern .contact-list i {
+    margin-right: 15px;
+    color: #3498db;
+    font-size: 1.2em;
+}
+
+/* 经典模板样式 */
+.classic {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.classic .resume-header {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.classic .name-title h1 {
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+.classic .name-title p {
+    font-style: italic;
+}
+
+.classic .section-title {
+    font-size: 1.5em;
+    color: #333;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    margin-top: 25px;
+}
+
+.classic .info-item {
+    margin-bottom: 15px;
+}
+
+/* 创意模板样式 */
+.creative {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.creative .resume-header {
+    background: linear-gradient(135deg, #6dd5ed, #2193b0); /* 更柔和的渐变 */
+    color: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 添加轻微阴影 */
+}
+
+.creative .name-title h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.creative .name-title p {
+    font-size: 1.4em;
+    opacity: 0.9;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    background-color: rgba(255, 255, 255, 0.2); /* 更改为白色半透明背景 */
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.creative .section-title {
+    color: #2193b0;
+    font-size: 1.8em;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #6dd5ed;
+}
+
+.creative .skills ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    list-style-type: none;
+}
+
+.creative .skills li {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.creative .contact-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.creative .contact-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.creative .contact-list i {
+    margin-right: 10px;
+    color: #2193b0;
+}
+
+/* 图标样式 */
+.icon-phone:before { content: '📞'; }
+.icon-email:before { content: '📧'; }
+.icon-location:before { content: '📍'; }
+
+/* PDF 生成时的通用样式 */
+@media print {
+    .resume-section {
+        margin-bottom: 15px !important; /* 减少部分之间的垂直间距 */
+        page-break-inside: avoid; /* 尽量避免在部分内部分页 */
+    }
+
+    .section-title {
+        margin-top: 10px !important;
+        margin-bottom: 5px !important;
+    }
+
+    .info-item {
+        margin-bottom: 5px !important;
+    }
+
+    ul {
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+    }
+
+    li {
+        margin-bottom: 3px !important;
+    }
+}
+
+/* 为所有模板添加一些通用的紧凑样式 */
+.resume-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.info-item {
+    margin-bottom: 8px;
+}
+
+/* 调整现代模板的样式 */
+.modern .resume-section {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.modern .section-title {
+    margin-top: 20px;
+}
+
+/* 调整经典模板的样式 */
+.classic .resume-section {
+    margin-bottom: 15px;
+}
+
+.classic .section-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* 调整创意模板的样式 */
+.creative .resume-section {
+    margin-bottom: 15px;
+}
+
+.creative .section-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* ... 保留之前的其他样式 ... */

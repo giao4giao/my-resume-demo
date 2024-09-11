@@ -3,7 +3,12 @@ function getResumes() {
 }
 
 function saveResumes(resumes) {
-    localStorage.setItem('resumes', JSON.stringify(resumes));
+    try {
+        localStorage.setItem('resumes', JSON.stringify(resumes));
+    } catch (error) {
+        console.error('保存简历失败:', error);
+        alert('保存简历失败，可能是由于存储空间不足。请尝试删除一些旧的简历或减小头像图片的大小。');
+    }
 }
 
 function getResumeById(id) {
@@ -31,13 +36,15 @@ function deleteResume(id) {
 function createNewResume() {
     console.log("创建新简历函数被调用");
     const resumes = getResumes();
-    const newResume = JSON.parse(JSON.stringify(window.resumeConfig));
+    const newResume = JSON.parse(JSON.stringify(window.defaultResumeData));
     newResume.id = Date.now();
-    newResume.name = newResume.name || "新简历";  // 如果 name 为空，设置一个默认值
-    newResume.title = newResume.title || "职位未设置";  // 如果 title 为空，设置一个默认值
+    newResume.name = newResume.name || "新简历";
+    newResume.title = newResume.title || "职位未设置";
+    newResume.template = "default";
     resumes.push(newResume);
     saveResumes(resumes);
     window.loadResumeList();
+    console.log("新简历已创建:", newResume);
 }
 
 // 将函数暴露到全局作用域

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历管理系统</title>
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/resume-manager.css">
+    <link rel="stylesheet" href="src/styles/resume-editor.css">
+    <link rel="stylesheet" href="src/styles/templates.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div id="app-container"></div>
+
+    <script>
+        // 加载 resume.html 内容
+        fetch('src/resume.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('app-container').innerHTML = html;
+                // 加载其他脚本
+                loadScripts();
+            });
+
+        function loadScripts() {
+            const scripts = [
+                "src/config/resumeTemplates.js",
+                "src/config/defaultResumeData.js",
+                "src/services/resumeService.js",
+                "src/utils/pdfGenerator.js",
+                "src/components/ResumeList.js",
+                "src/components/ResumeEditor.js",
+                "src/components/AdvancedEditor.js",
+                "src/main.js"
+            ];
+
+            let loadedScripts = 0;
+            scripts.forEach(src => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    loadedScripts++;
+                    if (loadedScripts === scripts.length) {
+                        // 所有脚本加载完成后，调用 initApp
+                        if (typeof window.initApp === 'function') {
+                            window.initApp();
+                        } else {
+                            console.error('initApp function not found');
+                        }
+                    }
+                };
+                document.body.appendChild(script);
+            });
+        }
+
+        window.addEventListener('load', function() {
+            if (typeof window.jspdf === 'undefined') {
+                console.error('jsPDF library not loaded');
+            } else {
+                console.log('jsPDF library loaded successfully');
+            }
+            if (typeof html2canvas === 'undefined') {
+                console.error('html2canvas library not loaded');
+            } else {
+                console.log('html2canvas library loaded successfully');
+            }
+        });
+    </script>
+</body>
+</html>

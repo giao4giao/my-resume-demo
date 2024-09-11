@@ -1,0 +1,63 @@
+<!-- 简历管理界面 -->
+<div id="resume-manager">
+    <h1>简历管理系统</h1>
+    <div id="resume-list"></div>
+    <button id="create-resume-btn">创建新简历</button>
+</div>
+
+<!-- 简历编辑界面 -->
+<div id="resume-editor" style="display: none;">
+    <div id="resume-content">
+        <!-- 确保所有简历内容都在这个div内 -->
+    </div>
+    <div id="editor-controls">
+        <button id="add-avatar-btn">添加/更改头像</button>
+        <input type="file" id="avatar-input" accept="image/*" style="display: none;">
+        <button id="save-btn">保存修改</button>
+        <button id="download-btn">下载PDF</button>
+        <button id="back-btn">返回列表</button>
+        <button id="advanced-edit-btn">高级编辑</button>
+    </div>
+</div>
+
+<!-- 高级编辑界面 -->
+<div id="advanced-editor" style="display: none;">
+    <textarea id="json-editor"></textarea>
+    <button id="apply-json-btn">应用修改</button>
+    <button id="cancel-advanced-edit-btn">取消</button>
+</div>
+
+<!-- 脚本引用 -->
+<script src="config/resumeTemplates.js"></script>
+<script src="config/defaultResumeData.js"></script>
+<script src="services/resumeService.js"></script>
+<script src="utils/pdfGenerator.js"></script>
+<script src="components/ResumeList.js"></script>
+<script src="components/ResumeEditor.js"></script>
+<script src="components/AdvancedEditor.js"></script>
+
+<script>
+    // 检查库是否正确加载
+    window.addEventListener('load', function() {
+        if (typeof window.jspdf === 'undefined') {
+            console.error('jsPDF library not loaded');
+        } else {
+            console.log('jsPDF library loaded successfully');
+        }
+        if (typeof html2canvas === 'undefined') {
+            console.error('html2canvas library not loaded');
+        } else {
+            console.log('html2canvas library loaded successfully');
+        }
+    });
+</script>
+
+<!-- 添加到文件末尾，在最后一个 </div> 之前 -->
+
+<div id="notification-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-message"></p>
+    </div>
+</div>

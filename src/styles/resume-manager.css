@@ -1,0 +1,19 @@
+#resume-list {
+    margin-bottom: 20px;
+}
+
+.resume-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.resume-item button {
+    padding: 5px 10px;
+    font-size: 14px;
+}
