@@ -5,60 +5,91 @@ function initApp() {
     console.log("initApp 函数被调用");
 
     // 初始化各个组件
-    const resumeList = window.ResumeList();
-    const resumeEditor = window.ResumeEditor();
-    const advancedEditor = window.AdvancedEditor();
+    window.resumeList = window.ResumeList();
+    console.log("ResumeList initialized");
+    
+    window.resumeEditor = window.ResumeEditor;
+    console.log("ResumeEditor assigned");
+    
+    if (typeof window.resumeEditor.init === 'function') {
+        window.resumeEditor.init();
+        console.log("ResumeEditor initialized");
+    } else {
+        console.error("ResumeEditor.init is not a function");
+    }
 
     // 加载简历列表
-    resumeList.loadResumeList();
+    window.resumeList.loadResumeList();
+    console.log("Resume list loaded");
 
-    // 添加模板选择器
-    resumeEditor.addTemplateSelector();
+    // 添加创建新简历按钮的事件监听器
+    addCreateResumeButtonListener();
+    console.log("Create resume button listener added");
+}
 
-    // 使用可选链操作符来避免空引用错误
-    document.getElementById('create-resume-btn')?.addEventListener('click', function() {
-        console.log("创建新简历按钮被点击");
-        window.resumeService.createNewResume();
-    });
-    document.getElementById('save-btn')?.addEventListener('click', () => {
-        resumeEditor.saveCurrentResume(currentResumeId);
-        resumeEditor.showNotification('保存成功', '您的简历已成功保存。');
-    });
-    document.getElementById('download-btn')?.addEventListener('click', resumeEditor.downloadPDF);
-    document.getElementById('back-btn')?.addEventListener('click', showResumeList);
-    document.getElementById('advanced-edit-btn')?.addEventListener('click', () => advancedEditor.showAdvancedEditor(currentResumeId));
-    document.getElementById('apply-json-btn')?.addEventListener('click', () => advancedEditor.applyJsonChanges(currentResumeId));
-    document.getElementById('cancel-advanced-edit-btn')?.addEventListener('click', advancedEditor.hideAdvancedEditor);
-    document.getElementById('add-avatar-btn')?.addEventListener('click', resumeEditor.triggerAvatarUpload);
-    document.getElementById('avatar-input')?.addEventListener('change', (event) => resumeEditor.handleAvatarUpload(event, currentResumeId));
+function addCreateResumeButtonListener() {
+    const createResumeBtn = document.getElementById('create-resume-btn');
+    if (createResumeBtn) {
+        // 移除所有现有的事件监听器
+        createResumeBtn.replaceWith(createResumeBtn.cloneNode(true));
+        
+        // 重新获取按钮并添加新的事件监听器
+        const newCreateResumeBtn = document.getElementById('create-resume-btn');
+        newCreateResumeBtn.addEventListener('click', createNewResume);
+    } else {
+        console.error('创建新简历按钮未找到');
+    }
+}
 
-    // 确保 editResume 函数被正确定义
-    window.editResume = (index) => {
-        const resumes = resumeList.getResumes();
+function createNewResume() {
+    console.log("创建新简历按钮被点击");
+    const newResume = window.resumeService.createNewResume();
+    window.resumeList.loadResumeList(); // 重新加载简历列表
+    window.editResume(window.resumeService.getResumes().length - 1); // 编辑新创建的简历
+}
+
+// 定义全局的 editResume 函数
+window.editResume = function(index) {
+    console.log("editResume 被调用，index:", index);
+    const resumes = window.resumeService.getResumes();
+    if (resumes[index]) {
         currentResumeId = resumes[index].id;
         const currentResumeData = resumes[index];
-        const template = currentResumeData.template || 'default'; // 使用保存的模板，如果没有则使用默认模板
-        resumeEditor.fillResumeContent(currentResumeData, template);
+        const template = currentResumeData.template || 'default';
+        const resumeType = currentResumeData.type || 'mechanical';
+        const resumeTypeData = currentResumeData[resumeType] || window.defaultResumeData[resumeType];
+        window.resumeEditor.setCurrentResumeId(currentResumeId);
+        window.resumeEditor.fillResumeContent(resumeTypeData, template, resumeType);
+        
+        // 更新头像
+        window.resumeEditor.updateAvatarDisplay(currentResumeData.avatar);
+        
         document.getElementById('resume-manager').style.display = 'none';
         document.getElementById('resume-editor').style.display = 'block';
-    };
+    } else {
+        console.error("无法找到索引为 " + index + " 的简历");
+    }
+};
 
-    // 定义全局的删除简历函数
-    window.deleteResume = resumeList.handleDeleteResume;
-    // 定义全局的加载简历列表函数
-    window.loadResumeList = resumeList.loadResumeList;
-}
-
-// 显示简历列表
-function showResumeList() {
-    document.getElementById('resume-manager').style.display = 'block';
-    document.getElementById('resume-editor').style.display = 'none';
-    document.getElementById('advanced-editor').style.display = 'none';
-    window.loadResumeList();
-}
-
-// 暴露 initApp 函数到全局作用域
-window.initApp = initApp;
+// 定义全局的删除简历函数
+window.deleteResume = function(index) {
+    const resumes = window.resumeService.getResumes();
+    window.ConfirmDialog.show(
+        '确定要删除这份简历吗？',
+        () => {
+            window.resumeService.deleteResume(resumes[index].id);
+            window.resumeList.loadResumeList(); // 重新加载简历列表
+        }
+    );
+};
 
 // 当 DOM 加载完成后执行 initApp
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded event fired');
+    initApp();
+});
+
+// 添加一个 window load 事件监听器，以确保所有资源都加载完毕
+window.addEventListener('load', () => {
+    console.log('All resources loaded');
+});

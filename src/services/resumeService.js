@@ -20,7 +20,7 @@ function saveResume(resume) {
     const resumes = getResumes();
     const index = resumes.findIndex(r => r.id === resume.id);
     if (index !== -1) {
-        resumes[index] = resume;
+        resumes[index] = { ...resumes[index], ...resume };
     } else {
         resumes.push(resume);
     }
@@ -36,15 +36,18 @@ function deleteResume(id) {
 function createNewResume() {
     console.log("创建新简历函数被调用");
     const resumes = getResumes();
-    const newResume = JSON.parse(JSON.stringify(window.defaultResumeData));
-    newResume.id = Date.now();
-    newResume.name = newResume.name || "新简历";
-    newResume.title = newResume.title || "职位未设置";
-    newResume.template = "default";
+    const newResume = {
+        id: Date.now(),
+        name: "新简历",
+        title: "职位未设置",
+        template: "default",
+        type: "mechanical",
+        mechanical: JSON.parse(JSON.stringify(window.defaultResumeData.mechanical))
+    };
     resumes.push(newResume);
     saveResumes(resumes);
-    window.loadResumeList();
     console.log("新简历已创建:", newResume);
+    return newResume;
 }
 
 // 将函数暴露到全局作用域

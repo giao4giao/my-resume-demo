@@ -57,3 +57,32 @@ async function generatePDF(element) {
 
 // 将generatePDF函数暴露到全局作用域
 window.generatePDF = generatePDF;
+
+// 添加downloadPDF函数
+window.downloadPDF = async function() {
+    const resumeContent = document.getElementById('resume-content');
+    if (!resumeContent) {
+        console.error('Resume content element not found');
+        alert('无法找到简历内容，请确保简历已正确加载。');
+        return;
+    }
+    try {
+        console.log('Starting PDF download');
+        
+        // 临时移除"添加新项"按钮
+        const addItemButtons = resumeContent.querySelectorAll('.add-item-btn');
+        addItemButtons.forEach(btn => btn.style.display = 'none');
+
+        const pdf = await generatePDF(resumeContent);
+        
+        // 恢复"添加新项"按钮
+        addItemButtons.forEach(btn => btn.style.display = '');
+
+        console.log('PDF generated, saving...');
+        pdf.save('我的简历.pdf');
+        console.log('PDF saved');
+    } catch (error) {
+        console.error('生成PDF时发生错误:', error);
+        alert(`生成PDF时发生错误: ${error.message}\n请查看控制台以获取更多信息。`);
+    }
+};

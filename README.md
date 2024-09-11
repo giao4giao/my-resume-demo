@@ -4,20 +4,31 @@ A simple and interactive resume builder that allows users to create, edit, and m
 
 [中文版说明](README_CN.md)
 
-## New Features (v0.0.3)
+## New Features (v0.0.4)
 
-- Multiple resume templates with a template selector
-- Advanced editing mode supporting JSON format
-- Notification modal for better user feedback
-- Internationalization support with Chinese and English README files
+- Advanced editing mode supporting direct JSON format editing
+- Resume type selector for switching between different resume types (e.g., mechanical, software, marketing)
+- Confirmation dialog component for improved operation safety
 
 ## Improvements
 
-- Optimized project structure for better maintainability
-- Refactored JavaScript files for modular functionality
-- Enhanced PDF generation, resolving cross-page content issues
-- Improved resume editing interface with more editable fields
-- Enhanced resume data management with default resume data structure
+- Optimized resume editor structure and functionality for better maintainability
+- Enhanced template selector implementation for more flexibility and extensibility
+- Improved resume list management and display logic
+- Enhanced avatar upload and display functionality with real-time preview and updates
+- Optimized PDF generation for improved efficiency and output quality
+
+## User Experience
+
+- Added scroll listener for optimized editor control panel display
+- Improved editable element interaction for more intuitive editing experience
+- Enhanced notification system for timely user feedback
+
+## Style and Layout
+
+- Updated resume template styles with more diverse design options
+- Optimized responsive layout for better display across different devices
+- Improved editor and management interface styles for enhanced visual experience
 
 ## Features
 
@@ -27,7 +38,7 @@ A simple and interactive resume builder that allows users to create, edit, and m
 - Advanced editing using JSON format
 - Download resume as PDF with improved page layout
 - Responsive design
-- Multiple resume templates
+- Multiple resume templates and types
 
 ## Getting Started
 
@@ -65,11 +76,12 @@ Note: Due to the project structure, opening `index.html` directly in a browser w
 
 1. Click "Create New Resume" to start a new resume.
 2. Choose a template from the template selector.
-3. Edit the resume content by clicking on the text fields.
-4. Add or update the profile picture using the "Add/Change Avatar" button.
-5. Use the "Advanced Edit" button to modify the resume in JSON format.
-6. Save your changes using the "Save Changes" button.
-7. Download your resume as a PDF using the "Download PDF" button.
+3. Select a resume type from the resume type selector.
+4. Edit the resume content by clicking on the text fields.
+5. Add or update the profile picture using the "Add/Change Avatar" button.
+6. Use the "Advanced Edit" button to modify the resume in JSON format.
+7. Save your changes using the "Save Changes" button.
+8. Download your resume as a PDF using the "Download PDF" button.
 
 ## Recent Updates
 

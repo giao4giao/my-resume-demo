@@ -2,6 +2,10 @@ function ResumeList() {
     // 加载并显示简历列表
     function loadResumeList() {
         const resumeList = document.getElementById('resume-list');
+        if (!resumeList) {
+            console.error('Resume list element not found');
+            return;
+        }
         resumeList.innerHTML = '';
         const resumes = window.resumeService.getResumes();
         resumes.forEach((resume, index) => {
@@ -16,20 +20,15 @@ function ResumeList() {
             `;
             resumeList.appendChild(resumeItem);
         });
-    }
 
-    // 处理删除简历的操作
-    function handleDeleteResume(index) {
-        const resumes = window.resumeService.getResumes();
-        window.resumeService.deleteResume(resumes[index].id);
-        loadResumeList();
+        // 触发自定义事件
+        const event = new CustomEvent('resumeListLoaded');
+        document.dispatchEvent(event);
     }
 
     // 返回公共方法
     return {
-        loadResumeList,
-        handleDeleteResume,
-        getResumes: window.resumeService.getResumes
+        loadResumeList
     };
 }
 
