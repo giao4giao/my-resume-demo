@@ -1,5 +1,7 @@
 function ResumeList() {
-    // 加载并显示简历列表
+    let allResumes = [];
+    let isShowingAll = false;
+
     function loadResumeList() {
         const resumeList = document.getElementById('resume-list');
         if (!resumeList) {
@@ -7,26 +9,58 @@ function ResumeList() {
             return;
         }
         resumeList.innerHTML = '';
-        const resumes = window.resumeService.getResumes();
-        resumes.forEach((resume, index) => {
-            const resumeItem = document.createElement('div');
-            resumeItem.className = 'resume-item';
-            resumeItem.innerHTML = `
-                <span>${resume.name || '未命名'} - ${resume.title || '未设置职位'}</span>
-                <div>
-                    <button onclick="window.editResume(${index})">编辑</button>
-                    <button onclick="window.deleteResume(${index})">删除</button>
-                </div>
-            `;
-            resumeList.appendChild(resumeItem);
-        });
+        allResumes = window.resumeService.getResumes();
+        
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
+        
+        const displayedResumes = isShowingAll ? allResumes : allResumes.slice(0,6);
+        renderResumes(displayedResumes, translations);
 
-        // 触发自定义事件
+        if (allResumes.length > 6) {
+            const showMoreButton = document.createElement('button');
+            showMoreButton.id = 'show-more-btn';
+            showMoreButton.textContent = isShowingAll ? translations.showLess : translations.showMore;
+            showMoreButton.addEventListener('click', toggleShowMore);
+            resumeList.appendChild(showMoreButton);
+        }
+
         const event = new CustomEvent('resumeListLoaded');
         document.dispatchEvent(event);
     }
 
-    // 返回公共方法
+    function renderResumes(resumes, translations) {
+        const resumeList = document.getElementById('resume-list');
+        resumeList.innerHTML = '';
+        
+        resumes.forEach((resume, index) => {
+            const resumeItem = document.createElement('div');
+            resumeItem.className = 'resume-item';
+            
+            let avatarHtml = '';
+            if (resume[resume.type] && resume[resume.type].avatar) {
+                avatarHtml = `<img src="${resume[resume.type].avatar}" alt="${translations.avatar}" class="resume-list-avatar">`;
+            }
+            
+            resumeItem.innerHTML = `
+                <div class="resume-item-content">
+                    ${avatarHtml}
+                    <span>${resume.name || translations.unnamed} - ${resume.title || translations.unsetTitle}</span>
+                </div>
+                <div class="resume-item-buttons">
+                    <button onclick="window.editResume(${index})">${translations.edit}</button>
+                    <button onclick="window.deleteResume(${index})">${translations.delete}</button>
+                </div>
+            `;
+            resumeList.appendChild(resumeItem);
+        });
+    }
+
+    function toggleShowMore() {
+        isShowingAll = !isShowingAll;
+        loadResumeList();
+    }
+
     return {
         loadResumeList
     };

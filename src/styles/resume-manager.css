@@ -13,7 +13,67 @@
     border-radius: 5px;
 }
 
+.resume-item-content {
+    display: flex;
+    align-items: center;
+}
+
+.resume-list-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
 .resume-item button {
     padding: 5px 10px;
     font-size: 14px;
+}
+
+/* 新增的手机端适配样式 */
+@media (max-width: 768px) {
+    .resume-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .resume-item-content {
+        margin-bottom: 10px;
+    }
+
+    .resume-item-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .resume-item-buttons button {
+        flex: 1;
+        margin: 0 5px;
+    }
+}
+
+.more-resumes-info {
+    text-align: center;
+    margin-top: 10px;
+    color: #666;
+    font-style: italic;
+}
+
+/* 新增样式 */
+#show-more-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+#show-more-btn:hover {
+    background-color: #e0e0e0;
 }

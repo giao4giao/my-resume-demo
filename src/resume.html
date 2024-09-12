@@ -1,8 +1,8 @@
 <!-- 简历管理界面 -->
 <div id="resume-manager">
-    <h1 class="system-title">简历管理系统</h1>
+    <h1 class="system-title list-page-title" id="system-title">简历管理系统</h1>
     <div id="resume-list"></div>
-    <button id="create-resume-btn">创建新简历</button>
+    <button id="create-resume-btn" data-translate="createNewResume">创建新简历</button>
 </div>
 
 <!-- 简历编辑界面 -->
@@ -12,11 +12,11 @@
             <!-- 选择器将被动态插入到这里 -->
         </div>
         <div class="button-group">
-            <button id="add-avatar-btn">添加/更改头像</button>
-            <button id="save-btn">保存修改</button>
-            <button id="download-btn">下载PDF</button>
-            <button id="back-btn">返回列表</button>
-            <button id="advanced-edit-btn">高级编辑</button>
+            <button id="add-avatar-btn" data-translate="addAvatar">添加/更改头像</button>
+            <button id="save-btn" data-translate="saveChanges">保存修改</button>
+            <button id="download-btn" data-translate="downloadPDF">下载PDF</button>
+            <button id="back-btn" data-translate="backToList">返回列表</button>
+            <button id="advanced-edit-btn" data-translate="advancedEdit">高级编辑</button>
         </div>
         <input type="file" id="avatar-input" accept="image/*" style="display: none;">
     </div>
@@ -27,9 +27,14 @@
 
 <!-- 高级编辑界面 -->
 <div id="advanced-editor" style="display: none;">
-    <textarea id="json-editor"></textarea>
-    <button id="apply-json-btn">应用修改</button>
-    <button id="cancel-advanced-edit-btn">取消</button>
+    <div class="advanced-editor-container">
+        <h2>高级编辑</h2>
+        <div id="json-editor"></div>
+        <div class="advanced-editor-buttons">
+            <button id="apply-json-btn" class="primary-btn">应用修改</button>
+            <button id="cancel-advanced-edit-btn" class="secondary-btn">取消</button>
+        </div>
+    </div>
 </div>
 
 <!-- 通知模态框 -->

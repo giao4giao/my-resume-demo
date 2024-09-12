@@ -44,19 +44,22 @@ window.addEditableListeners = function() {
 
     // 为可编辑列表添加新项的功能
     const editableLists = ['skills', 'intern-responsibilities', 'project-details', 'awards', 'traits'];
+    const currentLang = localStorage.getItem('language') || 'zh';
+    const translations = window.translations[currentLang];
+    
     editableLists.forEach(listId => {
         const list = document.getElementById(listId);
         if (list && !list.hasAddItemButton) {
             list.hasAddItemButton = true;
             const addItemBtn = document.createElement('button');
-            addItemBtn.textContent = '添加新项';
-            addItemBtn.className = 'add-item-btn'; // 添加这个类名
+            addItemBtn.textContent = translations.addNewItem;
+            addItemBtn.className = 'add-item-btn';
             addItemBtn.addEventListener('click', function() {
                 const newItem = document.createElement('li');
                 newItem.className = 'editable';
-                newItem.textContent = '点击编辑';
+                newItem.textContent = translations.clickToEdit;
                 list.appendChild(newItem);
-                addEditableListeners(); // 只为新添加的项添加事件监听器
+                addEditableListeners();
             });
             list.parentNode.insertBefore(addItemBtn, list.nextSibling);
         }
@@ -65,43 +68,27 @@ window.addEditableListeners = function() {
 
 window.addScrollListener = function() {
     let lastScrollTop = 0;
-    let isHidden = false;
-    const originalMarginTop = 140; // 设置一个固定的原始顶部边距值
+    const editorControls = document.getElementById('editor-controls');
+    const resumeContent = document.getElementById('resume-content');
+    const controlsHeight = editorControls.offsetHeight;
+    const initialMarginTop = 120; // 与 CSS 中的初始 margin-top 值保持一致
 
     window.addEventListener('scroll', function() {
-        const editorControls = document.getElementById('editor-controls');
-        const selectorContainer = document.getElementById('selector-container');
-        const resumeContent = document.getElementById('resume-content');
-        const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        // 检查窗口宽度，只在非手机界面下执行滚动逻辑
+        if (window.innerWidth > 768) {
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-        if (currentScrollTop > lastScrollTop && !isHidden) {
-            // 向下滚动,隐藏选择器
-            selectorContainer.classList.add('hidden');
-            editorControls.style.paddingTop = '10px';
-            editorControls.style.paddingBottom = '10px';
-            resumeContent.style.marginTop = '70px';
-            isHidden = true;
-        } else if (currentScrollTop < lastScrollTop && isHidden) {
-            // 向上滚动,显示选择器
-            selectorContainer.classList.remove('hidden');
-            editorControls.style.paddingTop = '10px';
-            editorControls.style.paddingBottom = '10px';
-            resumeContent.style.marginTop = originalMarginTop + 'px'; // 恢复原始边距
-            isHidden = false;
+            if (currentScrollTop > lastScrollTop && currentScrollTop > controlsHeight) {
+                // 向下滚动，隐藏控制面板
+                editorControls.classList.add('hidden');
+                resumeContent.style.marginTop = '20px';
+            } else if (currentScrollTop < lastScrollTop || currentScrollTop <= controlsHeight) {
+                // 向上滚动或回到顶部，显示控制面板
+                editorControls.classList.remove('hidden');
+                resumeContent.style.marginTop = `${initialMarginTop}px`;
+            }
+
+            lastScrollTop = currentScrollTop;
         }
-
-        lastScrollTop = currentScrollTop;
-
-        // 清除之前的超时
-        clearTimeout(timeout);
-
-        // 设置新的超时
-        timeout = setTimeout(function() {
-            selectorContainer.classList.remove('hidden');
-            editorControls.style.paddingTop = '10px';
-            editorControls.style.paddingBottom = '10px';
-            resumeContent.style.marginTop = originalMarginTop + 'px'; // 恢复原始边距
-            isHidden = false;
-        }, 1000); // 1秒后显示选择器
     });
 };

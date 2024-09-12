@@ -7,13 +7,17 @@ window.addResumeTypeSelector = function() {
 
     // 检查是否已经存在简历类型选择器
     if (!document.getElementById('resume-type-selector')) {
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
         const selectorHtml = `
             <div class="selector-item">
-                <label for="resume-type-selector">简历类型:</label>
+                <label for="resume-type-selector">${translations.resumeTypeSelector}</label>
                 <select id="resume-type-selector" class="styled-select">
-                    ${Object.keys(window.defaultResumeData).map(key => 
-                        `<option value="${key}">${key.charAt(0).toUpperCase() + key.slice(1)}</option>`
-                    ).join('')}
+                    <option value="mechanical">${translations.mechanical}</option>
+                    <option value="software">${translations.software}</option>
+                    <option value="marketing">${translations.marketing}</option>
+                    <option value="electrical">${translations.electrical}</option>
+                    <option value="finance">${translations.finance}</option>
                 </select>
             </div>
         `;
@@ -21,8 +25,8 @@ window.addResumeTypeSelector = function() {
         
         document.getElementById('resume-type-selector').addEventListener('change', function(e) {
             const selectedResumeType = e.target.value;
-            if (window.resumeEditor && typeof window.resumeEditor.updateResumeType === 'function') {
-                window.resumeEditor.updateResumeType(selectedResumeType);
+            if (window.ResumeEditor && typeof window.ResumeEditor.updateResumeType === 'function') {
+                window.ResumeEditor.updateResumeType(selectedResumeType);
             } else {
                 console.error('ResumeEditor or updateResumeType method not found');
             }

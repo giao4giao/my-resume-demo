@@ -52,6 +52,7 @@
 .name-title h1 {
     margin: 0;
     text-align: left;
+    border-bottom: none; /* 移除下划线 */
 }
 
 .name-title p {

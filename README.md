@@ -4,31 +4,35 @@ A simple and interactive resume builder that allows users to create, edit, and m
 
 [中文版说明](README_CN.md)
 
-## New Features (v0.0.4)
+## New Features (v0.0.5)
 
-- Advanced editing mode supporting direct JSON format editing
-- Resume type selector for switching between different resume types (e.g., mechanical, software, marketing)
-- Confirmation dialog component for improved operation safety
+- Optimized avatar upload and display functionality for a more intuitive user experience
+- Improved resume type selector, supporting seamless switching between different resume types
+- Enhanced internationalization support with improved multi-language switching
 
 ## Improvements
 
-- Optimized resume editor structure and functionality for better maintainability
-- Enhanced template selector implementation for more flexibility and extensibility
-- Improved resume list management and display logic
-- Enhanced avatar upload and display functionality with real-time preview and updates
-- Optimized PDF generation for improved efficiency and output quality
+- Optimized resume template rendering logic for more flexible template customization
+- Improved `ResumeEditor` component, enhancing code maintainability and extensibility
+- Optimized resume data saving and loading mechanisms for improved data consistency
+- Enhanced template selector implementation, offering more diverse resume template options
 
 ## User Experience
 
-- Added scroll listener for optimized editor control panel display
-- Improved editable element interaction for more intuitive editing experience
+- Optimized avatar display logic, showing avatar only after successful upload without default placeholder
+- Improved editable element interaction for a more intuitive editing experience
 - Enhanced notification system for timely user feedback
 
-## Style and Layout
+## Cross-platform Compatibility
 
-- Updated resume template styles with more diverse design options
-- Optimized responsive layout for better display across different devices
-- Improved editor and management interface styles for enhanced visual experience
+- Synchronized PDF download format between mobile and desktop platforms, ensuring consistent output
+
+## Development-related
+
+- Restructured JavaScript files for better modularization
+- Optimized communication mechanisms between components, improving code maintainability and extensibility
+- Updated project documentation, including README and internationalization support
+- Split long CSS files into multiple smaller files, improving style management efficiency
 
 ## Features
 
@@ -39,6 +43,7 @@ A simple and interactive resume builder that allows users to create, edit, and m
 - Download resume as PDF with improved page layout
 - Responsive design
 - Multiple resume templates and types
+- Internationalization support
 
 ## Getting Started
 
@@ -86,6 +91,8 @@ Note: Due to the project structure, opening `index.html` directly in a browser w
 ## Recent Updates
 
 For a full list of changes, please see the [CHANGELOG](CHANGELOG.md).
+
+For the Chinese version of the changelog, please refer to [CHANGELOG_CN](CHANGELOG_CN.md).
 
 ## Contributing
 

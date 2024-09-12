@@ -1,0 +1,59 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-top: -20px;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    color: #2c3e50;
+}
+
+/* 新添加的样式 */
+.list-page-title {
+    margin-top: 15vh; /* 将标题下移到页面高度的15% */
+    margin-bottom: 5vh; /* 调整底部边距 */
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    font-size: 1.5em;
+    color: #3498db;
+}
+
+ul {
+    padding-left: 20px;
+    list-style-type: circle;
+}
+
+/* 从 main.css 合并的样式 */
+.info-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.info-item strong {
+    width: 120px;
+    text-align: right;
+    margin-right: 15px;
+    flex-shrink: 0;
+}

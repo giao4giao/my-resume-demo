@@ -7,13 +7,19 @@ window.addTemplateSelector = function() {
 
     // 检查是否已经存在模板选择器
     if (!document.getElementById('template-selector')) {
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
         const selectorHtml = `
             <div class="selector-item">
-                <label for="template-selector">模板:</label>
+                <label for="template-selector">${translations.templateSelector}</label>
                 <select id="template-selector" class="styled-select">
-                    ${Object.keys(window.resumeTemplates).map(key => 
-                        `<option value="${key}">${key.charAt(0).toUpperCase() + key.slice(1)}</option>`
-                    ).join('')}
+                    <option value="default">${translations.defaultTemplate}</option>
+                    <option value="modern">${translations.modernTemplate}</option>
+                    <option value="classic">${translations.classicTemplate}</option>
+                    <option value="creative">${translations.creativeTemplate}</option>
+                    <option value="minimalist">${translations.minimalistTemplate}</option>
+                    <option value="professional">${translations.professionalTemplate}</option>
+                    <option value="elegant">${translations.elegantTemplate}</option>
                 </select>
             </div>
         `;
@@ -21,8 +27,9 @@ window.addTemplateSelector = function() {
         
         document.getElementById('template-selector').addEventListener('change', function(e) {
             const selectedTemplate = e.target.value;
-            if (window.resumeEditor && typeof window.resumeEditor.updateTemplate === 'function') {
-                window.resumeEditor.updateTemplate(selectedTemplate);
+            console.log("Template changed to:", selectedTemplate);
+            if (window.ResumeEditor && typeof window.ResumeEditor.updateTemplate === 'function') {
+                window.ResumeEditor.updateTemplate(selectedTemplate);
             } else {
                 console.error('ResumeEditor or updateTemplate method not found');
             }

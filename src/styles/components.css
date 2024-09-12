@@ -1,0 +1,336 @@
+.editable:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+button {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.modal-content p {
+    color: #34495e;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 从 resume-editor.css 合并的样式 */
+#json-editor {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 10px;
+    overflow: auto;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#json-editor pre {
+    margin: 0;
+    padding: 10px;
+}
+
+#json-editor code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#resume-content {
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+#advanced-editor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.advanced-editor-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 800px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    overflow: hidden; /* 改为 hidden，防止容器本身出现滚动条 */
+}
+
+.advanced-editor-container h2 {
+    margin: 0;
+    padding: 20px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 1.5em;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#json-editor {
+    flex-grow: 1;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    border: none;
+    background-color: #f8f8f8;
+    overflow-y: scroll; /* 确保垂直滚动条始终显示 */
+    min-height: 200px;
+    max-height: calc(90vh - 140px); /* 设置最大高度，为标题和按钮留出空间 */
+}
+
+#json-editor pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#json-editor code {
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* 添加以下样式来自定义滚动条 */
+#json-editor::-webkit-scrollbar {
+    width: 10px;
+}
+
+#json-editor::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#json-editor::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+#json-editor::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.advanced-editor-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    background-color: #f0f0f0;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.primary-btn, .secondary-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.primary-btn {
+    background-color: #3498db;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.primary-btn:hover {
+    background-color: #2980b9;
+}
+
+.secondary-btn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.secondary-btn:hover {
+    background-color: #d0d0d0;
+}
+
+/* 调整 JSON 编辑器的样式 */
+#json-editor pre {
+    margin: 0;
+}
+
+#json-editor code {
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#resume-content {
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}，·
+
+#advanced-editor {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.resume-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar-container {
+    margin-right: 20px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3498db;
+}
+
+.name-title {
+    flex-grow: 1;
+}
+
+.name-title h1 {
+    margin: 0;
+    text-align: left;
+}
+
+.name-title p {
+    margin: 5px 0 0;
+    color: #7f8c8d;
+}
+
+.avatar-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #777;
+    cursor: pointer;
+}
+
+#template-selector {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+/* 在文件末尾添加以下内容 */
+
+@media (max-width: 768px) {
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 10% auto;
+    }
+}
+
+/* 在文件末尾添加以下样式 */
+#language-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    z-index: 1000;
+    
+    /* 添加以下样式以确保文字居中 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* 移除可能的内边距 */
+    line-height: 1; /* 确保行高不会影响居中 */
+}
+
+#language-toggle:hover {
+    background-color: #2980b9;
+}

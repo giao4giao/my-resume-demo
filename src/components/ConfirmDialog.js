@@ -1,36 +1,70 @@
 window.ConfirmDialog = {
-    show: function(message, onConfirm, onCancel) {
-        const dialogHtml = `
-            <div id="confirm-dialog" class="modal">
-                <div class="modal-content">
-                    <h2>确认操作</h2>
-                    <p>${message}</p>
-                    <div class="button-group centered">
-                        <button id="confirm-yes" class="btn btn-danger">确定</button>
-                        <button id="confirm-no" class="btn btn-secondary">取消</button>
-                    </div>
+    show: function(title, message, onConfirm) {
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
+
+        // 移除可能存在的旧对话框
+        const oldDialog = document.querySelector('.confirm-dialog');
+        if (oldDialog) {
+            oldDialog.remove();
+        }
+
+        const dialog = document.createElement('div');
+        dialog.className = 'confirm-dialog';
+        dialog.innerHTML = `
+            <div class="confirm-dialog-content">
+                <h2>${title}</h2>
+                <p>${message}</p>
+                <div class="confirm-dialog-buttons">
+                    <button class="confirm-yes">${translations.yes}</button>
+                    <button class="confirm-no">${translations.no}</button>
                 </div>
             </div>
         `;
 
-        // 插入对话框到 DOM
-        document.body.insertAdjacentHTML('beforeend', dialogHtml);
+        const yesButton = dialog.querySelector('.confirm-yes');
+        const noButton = dialog.querySelector('.confirm-no');
 
-        const dialog = document.getElementById('confirm-dialog');
-        const confirmYes = document.getElementById('confirm-yes');
-        const confirmNo = document.getElementById('confirm-no');
-
-        confirmYes.addEventListener('click', () => {
+        yesButton.addEventListener('click', () => {
             onConfirm();
-            dialog.remove();
+            document.body.removeChild(dialog);
         });
 
-        confirmNo.addEventListener('click', () => {
-            if (onCancel) onCancel();
-            dialog.remove();
+        noButton.addEventListener('click', () => {
+            document.body.removeChild(dialog);
         });
 
-        // 显示对话框
-        dialog.style.display = 'block';
+        document.body.appendChild(dialog);
+
+        // 添加样式以使对话框居中显示
+        dialog.style.position = 'fixed';
+        dialog.style.top = '50%';
+        dialog.style.left = '50%';
+        dialog.style.transform = 'translate(-50%, -50%)';
+        dialog.style.zIndex = '1000';
+        dialog.style.backgroundColor = 'white';
+        dialog.style.padding = '20px';
+        dialog.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+        dialog.style.borderRadius = '5px';
+        dialog.style.textAlign = 'center'; // 使内容居中
+
+        // 设置按钮容器的样式
+        const buttonsContainer = dialog.querySelector('.confirm-dialog-buttons');
+        buttonsContainer.style.display = 'flex';
+        buttonsContainer.style.justifyContent = 'center';
+        buttonsContainer.style.marginTop = '20px';
+
+        // 设置按钮样式
+        const buttons = dialog.querySelectorAll('.confirm-dialog-buttons button');
+        buttons.forEach(button => {
+            button.style.margin = '0 10px';
+            button.style.padding = '10px 20px';
+            button.style.fontSize = '16px';
+            button.style.cursor = 'pointer';
+            button.style.border = 'none';
+            button.style.borderRadius = '5px';
+            button.style.backgroundColor = '#3498db';
+            button.style.color = 'white';
+        });
     }
 };

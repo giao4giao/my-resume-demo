@@ -3,29 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简历管理系统</title>
-    <link rel="stylesheet" href="src/styles/main.css">
+    <title id="page-title">简历管理系统</title>
+    <!-- 引入各种样式表 -->
+    <link rel="stylesheet" href="src/styles/base.css">
+    <link rel="stylesheet" href="src/styles/layout.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+    <link rel="stylesheet" href="src/styles/editor.css">
     <link rel="stylesheet" href="src/styles/resume-manager.css">
     <link rel="stylesheet" href="src/styles/resume-editor.css">
     <link rel="stylesheet" href="src/styles/templates.css">
+    <!-- 引入外部库：jsPDF 和 html2canvas，用于生成PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- 引入默认简历数据 -->
+    <script src="src/config/defaultResumeData_zh.js"></script>
+    <script src="src/config/defaultResumeData_en.js"></script>
+    <script src="src/config/defaultResumeData.js"></script>
+    <!-- 引入头像上传组件 -->
+    <script src="src/components/AvatarUploader.js"></script>
+    <!-- 添加 highlight.js 的 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+    <!-- 添加 highlight.js 的 JavaScript 文件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/languages/json.min.js"></script>
 </head>
 <body>
+    <!-- 添加一个加载指示器 -->
+    <div id="loading">正在加载...</div>
+    
+    <!-- 应用容器 -->
     <div id="app-container"></div>
 
     <script>
+        console.log('Script execution started');
+
+        // 在其他脚本之前添加这段代码
+        window.addEventListener('load', function() {
+            console.log('Window load event fired');
+            const currentLang = localStorage.getItem('language') || 'zh';
+            const pageTitle = document.getElementById('page-title');
+            if (currentLang === 'en') {
+                pageTitle.textContent = 'Resume Management System';
+            }
+        });
+
         // 加载 resume.html 内容
         fetch('src/resume.html')
-            .then(response => response.text())
+            .then(response => {
+                console.log('Fetch response received');
+                return response.text();
+            })
             .then(html => {
+                console.log('HTML content loaded');
                 document.getElementById('app-container').innerHTML = html;
                 // 加载其他脚本
                 loadScripts();
+            })
+            .catch(error => {
+                console.error('Error loading resume.html:', error);
+                document.getElementById('loading').textContent = '加载失败，请刷新页面重试';
             });
 
         function loadScripts() {
+            console.log('loadScripts function called');
+            // 需要加载的脚本列表
             const scripts = [
+                "src/config/translations.js",
                 "src/config/resumeTemplates.js",
                 "src/config/defaultResumeData.js",
                 "src/services/resumeService.js",
@@ -34,6 +77,7 @@
                 "src/components/AvatarUploader.js",
                 "src/components/TemplateSelector.js",
                 "src/components/ResumeTypeSelector.js",
+                "src/components/LanguageToggle.js",
                 "src/utils/notificationManager.js",
                 "src/components/ResumeList.js",
                 "src/components/ResumeEditor.js",
@@ -47,31 +91,51 @@
                 const script = document.createElement('script');
                 script.src = src;
                 script.onload = () => {
+                    console.log(`Script loaded: ${src}`);
                     loadedScripts++;
                     if (loadedScripts === scripts.length) {
+                        console.log('All scripts loaded');
                         // 所有脚本加载完成后，调用 initApp
                         if (typeof window.initApp === 'function') {
                             window.initApp();
                         } else {
                             console.error('initApp function not found');
                         }
+                        // 添加语言切换按钮
+                        if (typeof window.addLanguageToggle === 'function') {
+                            window.addLanguageToggle();
+                        } else {
+                            console.error('addLanguageToggle function not found');
+                        }
+                        // 隐藏加载指示器
+                        document.getElementById('loading').style.display = 'none';
                     }
+                };
+                script.onerror = () => {
+                    console.error(`Error loading script: ${src}`);
                 };
                 document.body.appendChild(script);
             });
         }
 
         window.addEventListener('load', function() {
+            console.log('Window load event listener executed');
+            // 检查 jsPDF 库是否正确加载
             if (typeof window.jspdf === 'undefined') {
                 console.error('jsPDF library not loaded');
             } else {
                 console.log('jsPDF library loaded successfully');
             }
+            // 检查 html2canvas 库是否正确加载
             if (typeof html2canvas === 'undefined') {
                 console.error('html2canvas library not loaded');
             } else {
                 console.log('html2canvas library loaded successfully');
             }
+
+            // 设置 html 标签的 lang 属性
+            const currentLang = localStorage.getItem('language') || 'zh';
+            document.documentElement.lang = currentLang;
         });
     </script>
 </body>

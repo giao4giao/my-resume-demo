@@ -1,72 +1,109 @@
+# Changelog
+
+## v0.0.5
+
+### New Features
+- Optimized avatar upload and display functionality for a more intuitive user experience
+- Improved resume type selector, supporting seamless switching between different resume types
+- Enhanced internationalization support with improved multi-language switching
+
+### Improvements
+- Optimized resume template rendering logic for more flexible template customization
+- Improved `ResumeEditor` component, enhancing code maintainability and extensibility
+- Optimized resume data saving and loading mechanisms for improved data consistency
+- Enhanced template selector implementation, offering more diverse resume template options
+
+### User Experience
+- Optimized avatar display logic, showing avatar only after successful upload without default placeholder
+- Improved editable element interaction for a more intuitive editing experience
+- Enhanced notification system for timely user feedback
+
+### Cross-platform Compatibility
+- Synchronized PDF download format between mobile and desktop platforms, ensuring consistent output
+
+### Development-related
+- Restructured JavaScript files for better modularization
+- Optimized communication mechanisms between components, improving code maintainability and extensibility
+- Updated project documentation, including README and internationalization support
+- Split long CSS files into multiple smaller files, improving style management efficiency
+
+### Fixes
+- Resolved potential data loss issues when switching resume types
+- Fixed display anomalies that may occur during template switching
+
+### Style and Layout
+- Updated resume template styles, providing more diverse design options
+- Optimized responsive layout, improving display on different devices
+- Improved style organization and maintainability by splitting CSS files
+
 ## v0.0.4
 
-### 新功能
-- 实现了高级编辑模式，支持直接编辑JSON格式的简历数据
-- 添加了简历类型选择器，支持切换不同类型的简历（如机械、软件、市场营销等）
-- 引入确认对话框组件，提高用户操作的安全性
+### New Features
+- Implemented advanced editing mode, supporting direct JSON format editing of resume data
+- Added resume type selector, supporting switching between different resume types (e.g., mechanical, software, marketing)
+- Introduced confirmation dialog component for improved operation safety
 
-### 改进
-- 优化了简历编辑器的结构和功能，提高了代码的可维护性
-- 改进了模板选择器的实现，使其更加灵活和易于扩展
-- 优化了简历列表的管理和显示逻辑
-- 改进了头像上传和显示功能，支持实时预览和更新
-- 优化了PDF生成功能，提高了生成效率和输出质量
+### Improvements
+- Optimized resume editor structure and functionality for better maintainability
+- Enhanced template selector implementation for more flexibility and extensibility
+- Improved resume list management and display logic
+- Enhanced avatar upload and display functionality with real-time preview and updates
+- Optimized PDF generation for improved efficiency and output quality
 
-### 用户体验
-- 添加了滚动监听功能，优化了编辑器控制面板的显示效果
-- 改进了可编辑元素的交互方式，提供更直观的编辑体验
-- 优化了通知系统，为用户操作提供及时反馈
+### User Experience
+- Added scroll listener for optimized editor control panel display
+- Improved editable element interaction for more intuitive editing experience
+- Enhanced notification system for timely user feedback
 
-### 样式和布局
-- 更新了简历模板的样式，提供了更多样化的设计选项
-- 优化了响应式布局，提高了在不同设备上的显示效果
-- 改进了编辑器和管理界面的样式，提升了整体视觉体验
+### Style and Layout
+- Updated resume template styles with more diverse design options
+- Optimized responsive layout for better display across different devices
+- Improved editor and management interface styles for enhanced visual experience
 
-### 开发相关
-- 重构了JavaScript文件结构，实现了更好的模块化
-- 优化了资源加载策略，提高了应用的加载速度
-- 更新了项目文档，包括README和国际化支持
+### Development-related
+- Restructured JavaScript files for better modularization
+- Optimized resource loading strategy, improving application loading speed
+- Updated project documentation, including README and internationalization support
 
-### 修复
-- 解决了多个与数据保存和加载相关的bug
-- 修复了模板切换时可能出现的显示问题
-- 解决了高级编辑模式下可能出现的数据不同步问题
+### Fixes
+- Resolved multiple bugs related to data saving and loading
+- Fixed display issues that may occur during template switching
+- Resolved data synchronization issues in advanced editing mode
 
 ## v0.0.3
 
-### 新功能
-- 引入多个简历模板,并添加模板选择器
-- 新增高级编辑模式,支持JSON格式编辑简历
-- 添加通知模态框,提供更好的用户反馈
-- 实现国际化支持,添加中英文README文件
+### New Features
+- Introduced multiple resume templates and added template selector
+- Added advanced editing mode, supporting JSON format resume editing
+- Added notification modal for better user feedback
+- Implemented internationalization support, adding Chinese and English README files
 
-### 改进
-- 优化项目结构,提高代码可维护性
-- 重构JavaScript文件,实现功能模块化
-- 改进PDF生成功能,解决内容跨页问题
-- 优化简历编辑界面,增加更多可编辑字段
-- 改进简历数据管理,新增默认简历数据结构
+### Improvements
+- Optimized project structure for better code maintainability
+- Refactored JavaScript files for functional modularization
+- Improved PDF generation functionality, resolving cross-page content issues
+- Enhanced resume editing interface, adding more editable fields
+- Improved resume data management, adding default resume data structure
 
-### 开发相关
-- 更新.gitignore文件,优化版本控制
-- 改进GitHub Actions工作流,优化自动发布流程
-
+### Development-related
+- Updated .gitignore file for optimized version control
+- Improved GitHub Actions workflow for optimized automatic release process
 
 ## v0.0.2
 
-- 优化了 PDF 生成功能,解决了内容分页问题
-- 改进了 `pdfGenerator.js` 文件,提高了 PDF 生成的稳定性
-- 移除了页面间距设置,允许内容在页面之间自然分隔
-- 优化了 canvas 到 PDF 的转换过程
-- 重构了项目结构,将功能模块化以提高可维护性
-- 添加了高级编辑功能,支持 JSON 格式编辑简历
-- 改进了简历列表管理功能
-- 优化了简历编辑界面,提供更直观的编辑体验
+- Optimized PDF generation functionality, resolving content pagination issues
+- Improved `pdfGenerator.js` file, enhancing PDF generation stability
+- Removed page spacing settings, allowing content to naturally separate between pages
+- Optimized canvas to PDF conversion process
+- Refactored project structure, modularizing features for improved maintainability
+- Added advanced editing functionality, supporting JSON format resume editing
+- Improved resume list management functionality
+- Enhanced resume editing interface, providing a more intuitive editing experience
 
 ## v0.0.1
 
-- 初始版本发布
-- 添加了基本的简历HTML结构
-- 创建了基础的CSS样式
-- 实现了简单的JavaScript功能
-- 设置了GitHub Actions自动发布工作流
+- Initial version release
+- Added basic resume HTML structure
+- Created foundational CSS styles
+- Implemented simple JavaScript functionality
+- Set up GitHub Actions automatic release workflow

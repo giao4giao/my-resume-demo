@@ -9,12 +9,21 @@ async function generatePDF(element) {
         // 添加打印样式类
         element.classList.add('print-mode');
 
+        // 创建一个临时容器来复制内容
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = element.innerHTML;
+        tempContainer.classList.add('pdf-container');
+        document.body.appendChild(tempContainer);
+
+        // 应用 PDF 生成专用样式
+        applyPDFStyles(tempContainer);
+
         const pdf = new window.jspdf.jsPDF('p', 'pt', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
         const margins = 40; // 页面边距
         const contentWidth = pdfWidth - 2 * margins; // 内容宽度
-        const sections = element.querySelectorAll('.resume-section');
+        const sections = tempContainer.querySelectorAll('.resume-section');
         let yOffset = margins;
 
         for (let i = 0; i < sections.length; i++) {
@@ -44,8 +53,9 @@ async function generatePDF(element) {
             }
         }
 
-        // 移除打印样式类
+        // 移除打印样式类和临时容器
         element.classList.remove('print-mode');
+        document.body.removeChild(tempContainer);
 
         console.log('PDF generation complete');
         return pdf;
@@ -53,6 +63,48 @@ async function generatePDF(element) {
         console.error('Error in PDF generation:', error);
         throw error;
     }
+}
+
+function applyPDFStyles(container) {
+    // 应用 PDF 专用样式
+    container.style.width = '800px';
+    container.style.margin = '0 auto';
+    container.style.padding = '20px';
+    container.style.boxSizing = 'border-box';
+    container.style.fontSize = '12px';
+
+    // 重置响应式样式
+    const elements = container.querySelectorAll('*');
+    elements.forEach(el => {
+        el.style.width = 'auto';
+        el.style.maxWidth = 'none';
+        el.style.margin = '0';
+        el.style.padding = '0';
+        el.style.float = 'none';
+        el.style.position = 'static';
+    });
+
+    // 应用特定样式
+    const header = container.querySelector('.resume-header');
+    if (header) {
+        header.style.display = 'flex';
+        header.style.alignItems = 'center';
+        header.style.marginBottom = '20px';
+    }
+
+    const avatar = container.querySelector('.avatar');
+    if (avatar) {
+        avatar.style.width = '100px';
+        avatar.style.height = '100px';
+        avatar.style.marginRight = '20px';
+    }
+
+    const sections = container.querySelectorAll('.resume-section');
+    sections.forEach(section => {
+        section.style.marginBottom = '20px';
+    });
+
+    // 可以根据需要添加更多特定样式
 }
 
 // 将generatePDF函数暴露到全局作用域

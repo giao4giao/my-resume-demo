@@ -1,77 +1,118 @@
-function ResumeEditor() {
-    let currentResumeData = null;
-    let currentTemplate = 'default';
-    let currentResumeType = 'mechanical';
-    let currentResumeId = null;
+const ResumeEditor = {
+    currentResumeId: null,
+    currentTemplate: 'default',
+    currentResumeType: 'mechanical',
+    currentResumeData: {},
 
-    function fillResumeContent(resumeData, template = 'default', resumeType = 'mechanical') {
-        console.log("fillResumeContent 被调用", resumeData, template, resumeType);
-        if (!resumeData) {
-            console.error('Resume data is undefined');
-            return;
-        }
-        currentResumeData = resumeData;
-        currentTemplate = template;
-        currentResumeType = resumeType;
-        const resumeContent = document.getElementById('resume-content');
-        const config = window.resumeTemplates[template];
-        
-        let content = `<div class="resume ${config.className}">`;
-        content += config.sections.map(section => 
-            window.sectionRenderers[section](resumeData, config.className)
-        ).join('');
-        content += '</div>';
-
-        resumeContent.innerHTML = content;
-
-        // 更新头像
-        updateAvatarDisplay();
-
-        // 重置所有可编辑元素和列表的标志
-        document.querySelectorAll('.editable').forEach(el => {
-            el.hasListener = false;
-        });
-        ['skills', 'intern-responsibilities', 'project-details', 'awards', 'traits'].forEach(listId => {
-            const list = document.getElementById(listId);
-            if (list) {
-                list.hasAddItemButton = false;
-            }
-        });
-
-        window.addEditableListeners();
-        window.addAvatarUploadListener();
+    init: function() {
+        console.log("ResumeEditor init function called");
+        this.addEventListeners();
         window.addTemplateSelector();
         window.addResumeTypeSelector();
+        window.addScrollListener();
+    },
 
-        // 更新模板选择器
-        const templateSelector = document.getElementById('template-selector');
-        if (templateSelector) {
-            templateSelector.value = template;
+    addEventListeners: function() {
+        const saveBtn = document.getElementById('save-btn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => this.saveCurrentResume());
         }
 
-        // 更新简历类型选择器
-        const resumeTypeSelector = document.getElementById('resume-type-selector');
-        if (resumeTypeSelector) {
-            resumeTypeSelector.value = resumeType;
+        const downloadBtn = document.getElementById('download-btn');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', window.downloadPDF);
         }
-    }
 
-    function updateAvatarDisplay() {
-        const avatarContainer = document.querySelector('.avatar-container');
-        if (avatarContainer) {
-            const fullResumeData = window.resumeService.getResumeById(currentResumeId);
-            if (fullResumeData && fullResumeData[currentResumeType] && fullResumeData[currentResumeType].avatar) {
-                avatarContainer.innerHTML = `<img src="${fullResumeData[currentResumeType].avatar}" alt="头像" class="avatar">`;
-            } else {
-                avatarContainer.innerHTML = `<div class="avatar-placeholder">添加头像</div>`;
+        const backBtn = document.getElementById('back-btn');
+        if (backBtn) {
+            backBtn.addEventListener('click', this.backToList.bind(this));
+        }
+
+        const advancedEditBtn = document.getElementById('advanced-edit-btn');
+        if (advancedEditBtn) {
+            advancedEditBtn.addEventListener('click', this.showAdvancedEditor.bind(this));
+        }
+
+        const addAvatarBtn = document.getElementById('add-avatar-btn');
+        if (addAvatarBtn) {
+            addAvatarBtn.addEventListener('click', () => {
+                console.log('Add avatar button clicked');
+                if (typeof window.triggerAvatarUpload === 'function') {
+                    window.triggerAvatarUpload();
+                } else {
+                    console.error('triggerAvatarUpload function not found');
+                }
+            });
+        } else {
+            console.error('Add avatar button not found');
+        }
+
+        const avatarInput = document.getElementById('avatar-input');
+        if (avatarInput) {
+            avatarInput.addEventListener('change', (event) => {
+                console.log('Avatar input changed');
+                if (typeof window.handleAvatarUpload === 'function') {
+                    window.handleAvatarUpload(event);
+                } else {
+                    console.error('handleAvatarUpload function not found');
+                }
+            });
+        } else {
+            console.error('Avatar input not found');
+        }
+    },
+
+    fillResumeContent: function(resumeData, template, resumeType) {
+        console.log("fillResumeContent 被调用", resumeData, template, resumeType);
+        this.currentTemplate = template;
+        this.currentResumeType = resumeType;
+        this.currentResumeData = resumeData;
+        const resumeContent = document.getElementById('resume-content');
+        resumeContent.className = template;
+        
+        const templateConfig = window.resumeTemplates[template];
+        let html = '';
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
+        
+        templateConfig.sections.forEach(section => {
+            if (window.sectionRenderers[section]) {
+                try {
+                    html += window.sectionRenderers[section](resumeData, template, translations);
+                } catch (error) {
+                    console.error(`Error rendering section ${section}:`, error);
+                    html += `<div class="error-section">Error rendering ${section}</div>`;
+                }
             }
-        }
-    }
+        });
+        
+        resumeContent.innerHTML = html;
+        
+        // 确保头像被正确渲染
+        this.updateAvatarDisplay(resumeData.avatar);
+        
+        // 更新选择器
+        const templateSelector = document.getElementById('template-selector');
+        if (templateSelector) templateSelector.value = template;
+        
+        const resumeTypeSelector = document.getElementById('resume-type-selector');
+        if (resumeTypeSelector) resumeTypeSelector.value = resumeType;
+        
+        window.addEditableListeners();
+        window.addScrollListener();
 
-    function saveCurrentResume() {
-        const updatedResume = window.resumeService.getResumeById(currentResumeId);
+        // 更新"添加新项"按钮的文本
+        const addItemButtons = document.querySelectorAll('.add-item-btn');
+        addItemButtons.forEach(button => {
+            button.textContent = translations.addNewItem;
+        });
+    },
+
+    saveCurrentResume: function() {
+        const updatedResume = window.resumeService.getResumeById(this.currentResumeId);
+        console.log('Saving resume:', updatedResume);
         if (!updatedResume) {
-            console.error('Cannot find resume with id:', currentResumeId);
+            console.error('Cannot find resume with id:', this.currentResumeId);
             return;
         }
 
@@ -82,191 +123,148 @@ function ResumeEditor() {
         if (titleElement) updatedResume.title = titleElement.innerText;
 
         // 更新当前简历类型的数据
-        updatedResume[currentResumeType] = { ...getCurrentResumeData() };
+        const currentData = this.getCurrentResumeData();
+        updatedResume[this.currentResumeType] = { ...updatedResume[this.currentResumeType], ...currentData };
         
-        // 清空所有可能包含多个项目的数组
-        const arrayFields = ['skills', 'intern-responsibilities', 'project-details', 'awards', 'traits'];
-        arrayFields.forEach(field => {
-            updatedResume[currentResumeType][field] = [];
-        });
-
-        // 保存所有可编辑字段
-        document.querySelectorAll('.editable').forEach(el => {
-            if (el.id) {
-                updatedResume[currentResumeType][el.id] = el.innerText;
-            } else if (el.parentElement && el.parentElement.id) {
-                // 处理列表项
-                const parentId = el.parentElement.id;
-                if (arrayFields.includes(parentId)) {
-                    if (!updatedResume[currentResumeType][parentId]) {
-                        updatedResume[currentResumeType][parentId] = [];
-                    }
-                    updatedResume[currentResumeType][parentId].push(el.innerText);
-                }
-            }
-        });
-
         // 保存头像数据
-        const avatarImg = document.querySelector('.avatar');
-        if (avatarImg) {
-            updatedResume[currentResumeType].avatar = avatarImg.src;
+        if (updatedResume[this.currentResumeType].avatar) {
+            console.log('Saving avatar data:', updatedResume[this.currentResumeType].avatar.substring(0, 50) + '...');
+            const avatarContainer = document.querySelector('.avatar-container');
+            if (avatarContainer) {
+                avatarContainer.innerHTML = `<img src="${updatedResume[this.currentResumeType].avatar}" alt="头像" class="avatar">`;
+            }
+        } else {
+            console.log('No avatar data to save');
         }
 
         // 保存当前选择的模板和类型
-        updatedResume.template = currentTemplate;
-        updatedResume.type = currentResumeType;
+        updatedResume.template = this.currentTemplate;
+        updatedResume.type = this.currentResumeType;
 
         window.resumeService.saveResume(updatedResume);
-        window.showNotification('保存成功', '您的简历已成功保存。');
+        console.log("Current resume saved with avatar:", updatedResume[this.currentResumeType].avatar ? "Yes" : "No");
+
+        // 添加保存成功的通知
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
+        window.showNotification(translations.saveSuccess, translations.resumeSaved);
+
+        // 添加这行来更新头像显示
+        this.updateAvatarDisplay(updatedResume[this.currentResumeType].avatar);
+    },
+
+    getCurrentResumeData: function() {
+        const resumeContent = document.getElementById('resume-content');
+        const data = {};
+        const editables = resumeContent.querySelectorAll('.editable');
+        editables.forEach(el => {
+            const key = el.id || el.parentElement.id;
+            if (key) {
+                if (el.tagName === 'UL') {
+                    data[key] = Array.from(el.children).map(li => li.textContent);
+                } else {
+                    data[key] = el.textContent;
+                }
+            }
+        });
         
-        // 重新加载简历列表以反映更改
+        // 保留原有的头像数据
+        const avatarImg = document.querySelector('.avatar');
+        if (avatarImg && avatarImg.src) {
+            data.avatar = avatarImg.src;
+        }
+        
+        return data;
+    },
+
+    backToList: function() {
+        document.getElementById('resume-editor').style.display = 'none';
+        document.getElementById('resume-manager').style.display = 'block';
         window.resumeList.loadResumeList();
-    }
+    },
 
-    function getCurrentResumeData() {
-        return currentResumeData || {
-            name: '',
-            title: '',
-            phone: '',
-            email: '',
-            address: '',
-            school: '',
-            major: '',
-            degree: '',
-            'edu-time': '',
-            gpa: '',
-            courses: '',
-            skills: [],
-            company: '',
-            position: '',
-            'intern-time': '',
-            'intern-responsibilities': [],
-            'project-name': '',
-            'project-type': '',
-            'project-time': '',
-            'project-details': [],
-            awards: [],
-            traits: []
-        };
-    }
-
-    function getCurrentResumeId() {
-        return currentResumeId;
-    }
-
-    function getCurrentResumeType() {
-        return currentResumeType;
-    }
-
-    function init() {
-        console.log("ResumeEditor init function called");
-        window.addTemplateSelector();
-        window.addResumeTypeSelector();
-        window.addScrollListener();
-
-        // 添加头像上传按钮的事件监听器
-        const addAvatarBtn = document.getElementById('add-avatar-btn');
-        if (addAvatarBtn) {
-            addAvatarBtn.addEventListener('click', window.triggerAvatarUpload);
+    showAdvancedEditor: function() {
+        if (window.AdvancedEditor && typeof window.AdvancedEditor.showAdvancedEditor === 'function') {
+            window.AdvancedEditor.showAdvancedEditor(this.currentResumeId);
+        } else {
+            console.error('AdvancedEditor or showAdvancedEditor method not found');
         }
+    },
 
-        // 添加保存按钮的事件监听器
-        const saveBtn = document.getElementById('save-btn');
-        if (saveBtn) {
-            saveBtn.addEventListener('click', () => saveCurrentResume());
-        }
+    updateTemplate: function(newTemplate) {
+        console.log("Updating template to:", newTemplate);
+        this.currentTemplate = newTemplate;
+        const fullResumeData = window.resumeService.getResumeById(this.currentResumeId);
+        const resumeData = fullResumeData[this.currentResumeType] || window.defaultResumeData[this.currentResumeType];
+        this.fillResumeContent(resumeData, this.currentTemplate, this.currentResumeType);
+    },
 
-        // 添加下载PDF按钮的事件监听器
-        const downloadBtn = document.getElementById('download-btn');
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', window.downloadPDF);
-        }
-
-        // 添加返回列表按钮的事件监听器
-        const backBtn = document.getElementById('back-btn');
-        if (backBtn) {
-            backBtn.addEventListener('click', () => {
-                document.getElementById('resume-editor').style.display = 'none';
-                document.getElementById('resume-manager').style.display = 'block';
-            });
-        }
-
-        // 添加高级编辑按钮的事件监听器
-        const advancedEditBtn = document.getElementById('advanced-edit-btn');
-        if (advancedEditBtn) {
-            advancedEditBtn.addEventListener('click', () => {
-                if (window.AdvancedEditor && typeof window.AdvancedEditor.showAdvancedEditor === 'function') {
-                    window.AdvancedEditor.showAdvancedEditor(currentResumeId);
-                } else {
-                    console.error('AdvancedEditor or showAdvancedEditor method not found');
-                }
-            });
-        }
-
-        // 添加高级编辑的应用按钮事件监听器
-        const applyJsonBtn = document.getElementById('apply-json-btn');
-        if (applyJsonBtn) {
-            applyJsonBtn.addEventListener('click', () => {
-                if (window.AdvancedEditor && typeof window.AdvancedEditor.applyJsonChanges === 'function') {
-                    window.AdvancedEditor.applyJsonChanges(currentResumeId);
-                } else {
-                    console.error('AdvancedEditor or applyJsonChanges method not found');
-                }
-            });
-        }
-
-        // 添加高级编辑的取消按钮事件监听器
-        const cancelAdvancedEditBtn = document.getElementById('cancel-advanced-edit-btn');
-        if (cancelAdvancedEditBtn) {
-            cancelAdvancedEditBtn.addEventListener('click', () => {
-                if (window.AdvancedEditor && typeof window.AdvancedEditor.cancelEdit === 'function') {
-                    window.AdvancedEditor.cancelEdit();
-                } else {
-                    console.error('AdvancedEditor or cancelEdit method not found');
-                }
-            });
-        }
-
-        // 添加头像上传input的事件监听器
-        const avatarInput = document.getElementById('avatar-input');
-        if (avatarInput) {
-            avatarInput.addEventListener('change', (event) => window.handleAvatarUpload(event));
-        }
-    }
-
-    // 在 DOMContentLoaded 事件中调用 init
-    document.addEventListener('DOMContentLoaded', init);
-
-    function updateTemplate(newTemplate) {
-        currentTemplate = newTemplate;
-        const fullResumeData = window.resumeService.getResumeById(currentResumeId);
-        const resumeData = fullResumeData[currentResumeType] || window.defaultResumeData[currentResumeType];
-        fillResumeContent(resumeData, currentTemplate, currentResumeType);
-    }
-
-    function updateResumeType(newResumeType) {
-        currentResumeType = newResumeType;
-        const fullResumeData = window.resumeService.getResumeById(currentResumeId);
+    updateResumeType: function(newResumeType) {
+        this.currentResumeType = newResumeType;
+        const fullResumeData = window.resumeService.getResumeById(this.currentResumeId);
         const resumeData = fullResumeData[newResumeType] || window.defaultResumeData[newResumeType];
-        fillResumeContent(resumeData, currentTemplate, currentResumeType);
+        this.fillResumeContent(resumeData, this.currentTemplate, this.currentResumeType);
+    },
+
+    setCurrentResumeId: function(id) {
+        this.currentResumeId = id;
+    },
+
+    updateAvatarDisplay: function(dataUrl) {
+        console.log('Updating avatar display with data:', dataUrl ? 'Data URL present' : 'No data URL');
+        let avatarContainer = document.querySelector('.avatar-container');
+        if (!avatarContainer) {
+            console.log('Avatar container not found, creating one');
+            avatarContainer = document.createElement('div');
+            avatarContainer.className = 'avatar-container';
+            const headerSection = document.querySelector('.resume-header');
+            if (headerSection) {
+                headerSection.insertBefore(avatarContainer, headerSection.firstChild);
+            } else {
+                console.error('Resume header not found');
+                return;
+            }
+        }
+
+        if (dataUrl) {
+            // 如果有数据 URL，创建或更新 img 元素
+            let avatarImg = avatarContainer.querySelector('.avatar');
+            if (!avatarImg) {
+                avatarImg = document.createElement('img');
+                avatarImg.className = 'avatar';
+                avatarContainer.innerHTML = ''; // 清空容器
+                avatarContainer.appendChild(avatarImg);
+            }
+            avatarImg.src = dataUrl;
+            avatarImg.style.display = 'block';
+            console.log('Avatar image updated or created');
+        } else {
+            // 如果没有数据 URL，清空容器
+            avatarContainer.innerHTML = '';
+            console.log('Avatar container cleared');
+        }
+    },
+
+    getCurrentResumeId: function() {
+        return this.currentResumeId;
+    },
+
+    getCurrentResumeType: function() {
+        return this.currentResumeType;
+    },
+
+    updateResumeData: function(key, value) {
+        if (this.currentResumeId) {
+            const resume = window.resumeService.getResumeById(this.currentResumeId);
+            if (resume && resume[this.currentResumeType]) {
+                resume[this.currentResumeType][key] = value;
+                window.resumeService.saveResume(resume);
+                console.log(`Updated ${key} in current resume`);
+            }
+        }
     }
+};
 
-    function setCurrentResumeId(id) {
-        currentResumeId = id;
-    }
-
-    return {
-        fillResumeContent,
-        saveCurrentResume,
-        getCurrentResumeData,
-        getCurrentResumeId,  // 添加这行
-        init,  // 确保这里返回了 init 方法
-        updateTemplate,
-        updateResumeType,
-        setCurrentResumeId,
-        updateAvatarDisplay  // 添加这行
-    };
-}
-
-window.ResumeEditor = ResumeEditor();
+// 确保 ResumeEditor 被添加到全局 window 对象
+window.ResumeEditor = ResumeEditor;
 console.log("ResumeEditor created and assigned to window");

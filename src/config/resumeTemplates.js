@@ -15,6 +15,18 @@ const resumeTemplates = {
     creative: {
         className: 'creative',
         sections: ['header', 'summary', 'skills', 'experience', 'projects', 'education', 'awards', 'traits', 'contact']
+    },
+    minimalist: {
+        className: 'minimalist',
+        sections: ['header', 'summary', 'experience', 'education', 'skills', 'contact']
+    },
+    professional: {
+        className: 'professional',
+        sections: ['header', 'summary', 'experience', 'skills', 'education', 'projects', 'awards', 'contact']
+    },
+    elegant: {
+        className: 'elegant',
+        sections: ['header', 'summary', 'experience', 'skills', 'education', 'awards', 'contact']
     }
 };
 
@@ -22,20 +34,21 @@ const resumeTemplates = {
 window.sectionRenderers = {
   header: (resumeData, className) => `
       <div class="resume-section resume-header ${className}">
-          ${resumeData.avatar ? 
-              `<div class="avatar-container">
-                  <img src="${resumeData.avatar}" alt="头像" class="avatar">
-              </div>` : ''
-          }
+          <div class="avatar-container">
+              ${resumeData.avatar ? 
+                  `<img src="${resumeData.avatar}" alt="头像" class="avatar">` : 
+                  ''
+              }
+          </div>
           <div class="name-title">
               <h1 class="editable" id="name">${resumeData.name}</h1>
               <p class="editable" id="title">${resumeData.title}</p>
           </div>
       </div>
   `,
-  contact: (resumeData, className) => `
+  contact: (resumeData, className, translations) => `
       <div class="resume-section contact ${className}">
-          <h2 class="section-title">联系方式</h2>
+          <h2 class="section-title" data-translation-key="contact">${translations ? translations.contact : 'Contact'}</h2>
           <ul class="contact-list">
               <li><i class="icon-phone"></i> <span class="editable" id="phone">${resumeData.phone}</span></li>
               <li><i class="icon-email"></i> <span class="editable" id="email">${resumeData.email}</span></li>
@@ -43,66 +56,86 @@ window.sectionRenderers = {
           </ul>
       </div>
   `,
-  summary: (resumeData, className) => `
+  summary: (resumeData, className, translations) => `
       <div class="resume-section summary ${className}">
-          <h2 class="section-title">个人简介</h2>
-          <p class="editable" id="summary">${resumeData.summary || '请添加个人简介'}</p>
+          <h2 class="section-title">${translations.summary}</h2>
+          <p class="editable" id="summary">${resumeData.summary || translations.addSummary}</p>
       </div>
   `,
-  education: (resumeData, className) => `
+  education: (resumeData, className, translations) => `
       <div class="resume-section ${className}">
-          <h2 class="section-title">教育背景</h2>
-          <p class="info-item"><strong>学校：</strong><span class="editable" id="school">${resumeData.school}</span></p>
-          <p class="info-item"><strong>专业：</strong><span class="editable" id="major">${resumeData.major}</span></p>
-          <p class="info-item"><strong>学位：</strong><span class="editable" id="degree">${resumeData.degree}</span></p>
-          <p class="info-item"><strong>时间：</strong><span class="editable" id="edu-time">${resumeData['edu-time']}</span></p>
-          <p class="info-item"><strong>GPA：</strong><span class="editable" id="gpa">${resumeData.gpa}</span></p>
-          <p class="info-item"><strong>相关课程：</strong><span class="editable" id="courses">${resumeData.courses}</span></p>
+          <h2 class="section-title" data-translation-key="education">${translations.education}</h2>
+          <p class="info-item"><strong>${translations.school}：</strong><span class="editable" id="school">${resumeData.school}</span></p>
+          <p class="info-item"><strong>${translations.major}：</strong><span class="editable" id="major">${resumeData.major}</span></p>
+          <p class="info-item"><strong>${translations.degree}：</strong><span class="editable" id="degree">${resumeData.degree}</span></p>
+          <p class="info-item"><strong>${translations.eduTime}：</strong><span class="editable" id="edu-time">${resumeData['edu-time']}</span></p>
+          <p class="info-item"><strong>${translations.gpa}：</strong><span class="editable" id="gpa">${resumeData.gpa}</span></p>
+          <p class="info-item"><strong>${translations.courses}：</strong><span class="editable" id="courses">${resumeData.courses}</span></p>
       </div>
   `,
-  skills: (resumeData, className) => `
+  skills: (resumeData, className, translations) => `
       <div class="resume-section ${className}">
-          <h2 class="section-title">专业技能</h2>
+          <h2 class="section-title">${translations.skills}</h2>
           <ul id="skills">
-              ${(resumeData.skills || []).map(skill => `<li class="editable">${skill}</li>`).join('')}
+              ${Array.isArray(resumeData.skills) 
+                  ? resumeData.skills.map(skill => `<li class="editable">${skill}</li>`).join('')
+                  : typeof resumeData.skills === 'string'
+                      ? `<li class="editable">${resumeData.skills}</li>`
+                      : ''}
           </ul>
       </div>
   `,
-  experience: (resumeData, className) => `
+  experience: (resumeData, className, translations) => `
       <div class="resume-section ${className}">
-          <h2 class="section-title">实习经历</h2>
-          <p class="info-item"><strong>公司：</strong><span class="editable" id="company">${resumeData.company || ''}</span></p>
-          <p class="info-item"><strong>职位：</strong><span class="editable" id="position">${resumeData.position || ''}</span></p>
-          <p class="info-item"><strong>时间：</strong><span class="editable" id="intern-time">${resumeData['intern-time'] || ''}</span></p>
+          <h2 class="section-title">${translations.experience}</h2>
+          <p class="info-item"><strong>${translations.company}：</strong><span class="editable" id="company">${resumeData.company || ''}</span></p>
+          <p class="info-item"><strong>${translations.position}：</strong><span class="editable" id="position">${resumeData.position || ''}</span></p>
+          <p class="info-item"><strong>${translations.internTime}：</strong><span class="editable" id="intern-time">${resumeData['intern-time'] || ''}</span></p>
           <ul id="intern-responsibilities">
-              ${(resumeData['intern-responsibilities'] || []).map(resp => `<li class="editable">${resp}</li>`).join('')}
+              ${Array.isArray(resumeData['intern-responsibilities']) 
+                  ? resumeData['intern-responsibilities'].map(resp => `<li class="editable">${resp}</li>`).join('')
+                  : typeof resumeData['intern-responsibilities'] === 'string'
+                      ? `<li class="editable">${resumeData['intern-responsibilities']}</li>`
+                      : ''}
           </ul>
       </div>
   `,
-  projects: (resumeData, className) => `
+  projects: (resumeData, className, translations) => `
       <div class="resume-section ${className}">
-          <h2 class="section-title">项目经验</h2>
-          <p class="info-item"><strong>项目名称：</strong><span class="editable" id="project-name">${resumeData['project-name'] || ''}</span></p>
-          <p class="info-item"><strong>类型：</strong><span class="editable" id="project-type">${resumeData['project-type'] || ''}</span></p>
-          <p class="info-item"><strong>时间：</strong><span class="editable" id="project-time">${resumeData['project-time'] || ''}</span></p>
+          <h2 class="section-title">${translations.projects}</h2>
+          <p class="info-item"><strong>${translations.projectName}：</strong><span class="editable" id="project-name">${resumeData['project-name'] || ''}</span></p>
+          <p class="info-item"><strong>${translations.projectType}：</strong><span class="editable" id="project-type">${resumeData['project-type'] || ''}</span></p>
+          <p class="info-item"><strong>${translations.projectTime}：</strong><span class="editable" id="project-time">${resumeData['project-time'] || ''}</span></p>
           <ul id="project-details">
-              ${(resumeData['project-details'] || []).map(detail => `<li class="editable">${detail}</li>`).join('')}
+              ${Array.isArray(resumeData['project-details']) 
+                  ? resumeData['project-details'].map(detail => `<li class="editable">${detail}</li>`).join('')
+                  : typeof resumeData['project-details'] === 'string'
+                      ? `<li class="editable">${resumeData['project-details']}</li>`
+                      : ''}
           </ul>
       </div>
   `,
-  awards: (resumeData, className) => `
+  awards: (resumeData, className, translations) => `
       <div class="resume-section ${className}">
-          <h2 class="section-title">证书与奖项</h2>
+          <h2 class="section-title">${translations.awards}</h2>
           <ul id="awards">
-              ${(resumeData.awards || []).map(award => `<li class="editable">${award}</li>`).join('')}
+              ${Array.isArray(resumeData.awards) 
+                  ? resumeData.awards.map(award => `<li class="editable">${award}</li>`).join('')
+                  : typeof resumeData.awards === 'string'
+                      ? `<li class="editable">${resumeData.awards}</li>`
+                      : ''}
           </ul>
       </div>
   `,
-  traits: (resumeData, className) => `
+  traits: (resumeData, className, translations) => `
       <div class="resume-section ${className}">
-          <h2 class="section-title">个人特质</h2>
+          <h2 class="section-title">${translations.traits}</h2>
           <ul id="traits">
-              ${(resumeData.traits || []).map(trait => `<li class="editable">${trait}</li>`).join('')}
+              ${Array.isArray(resumeData.traits) 
+                  ? resumeData.traits.map(trait => `<li class="editable">${trait}</li>`).join('')
+                  : typeof resumeData.traits === 'string'
+                      ? `<li class="editable">${resumeData.traits}</li>`
+                      : ''}
           </ul>
       </div>
   `

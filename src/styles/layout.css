@@ -1,0 +1,74 @@
+.info-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.info-item strong {
+    width: 120px;
+    text-align: right;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+#resume-content {
+    margin-top: 120px; /* 减少初始的顶部边距 */
+    transition: margin-top 0.3s ease-in-out;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+    padding-top: 20px; /* 减少顶部内边距 */
+}
+
+.resume-header {
+    padding-top: 20px; /* 减少头部的顶部内边距 */
+}
+
+/* 手机端适配 */
+@media (max-width: 768px) {
+    #resume-content {
+        margin-top: 20px; /* 减少顶部边距 */
+        padding: 15px;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-item strong {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .resume-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .avatar-container {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .name-title h1 {
+        text-align: center;
+    }
+}
+
+/* 保持原有的媒体查询 */
+@media (max-width: 1024px) {
+    #resume-content {
+        margin-top: 160px; /* 在小屏幕上适当调整顶部边距 */
+    }
+    /* 其余媒体查询样式保持不变 */
+}
+
+@media (max-width: 600px) {
+    #resume-content {
+        margin-top: 20px; /* 调整为更小的边距 */
+    }
+    /* 其余媒体查询样式保持不变 */
+}
