@@ -387,3 +387,19 @@
         padding: 15px;
     }
 }
+
+/* 在文件末尾添加以下样式 */
+
+.self-evaluation {
+    margin-bottom: 30px;
+}
+
+.self-evaluation .editable {
+    text-indent: 2em;
+    line-height: 1.6;
+    min-height: 100px;
+}
+
+.self-evaluation .editable:focus {
+    outline: none;
+}

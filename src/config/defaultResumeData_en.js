@@ -43,11 +43,12 @@ const defaultResumeData_en = {
           "CET-6 English Certificate"
       ],
       "traits": [
-          "Strong desire to learn and innovate",
-          "Excellent teamwork skills",
-          "Good communication and problem-solving abilities",
-          "Detail-oriented and responsible"
-      ]
+        "Strong desire to learn and innovate",
+        "Excellent teamwork skills",
+        "Good communication and problem-solving abilities",
+        "Detail-oriented and responsible"
+      ],
+      "self-evaluation": "As a graduate in Mechanical Engineering and Automation, I possess a solid theoretical foundation and practical experience. I am proficient in using CAD/CAM software for design and have hands-on experience with CNC programming and machine operation. I am passionate about new technologies and can quickly learn and adapt to new environments. In team collaborations, I excel in communication, enjoy sharing knowledge, and can effectively solve problems. I believe my professional skills and personal qualities will enable me to make positive contributions in the field of mechanical engineering."
   },
   "software": {
       "avatar": null,
@@ -91,11 +92,12 @@ const defaultResumeData_en = {
           "Graduate Academic Scholarship"
       ],
       "traits": [
-          "Strong learning enthusiasm for new technologies",
-          "Skilled at analyzing and solving complex problems",
-          "Good coding style and documentation skills",
-          "Proactive and able to adapt quickly to new environments"
-      ]
+        "Strong learning enthusiasm for new technologies",
+        "Skilled at analyzing and solving complex problems",
+        "Good coding style and documentation skills",
+        "Proactive and able to adapt quickly to new environments"
+      ],
+      "self-evaluation": "As a Software Engineering graduate, I have a strong programming foundation and rich project experience. I am proficient in multiple programming languages and frameworks, with a deep understanding of both frontend and backend development. I excel at analyzing complex problems and proposing innovative solutions. In team collaborations, I focus on code quality and documentation, and can communicate effectively with team members. I maintain a high enthusiasm for new technologies and often self-learn to keep up with industry developments. I believe my technical abilities and learning attitude will make me a valuable member of any software development team."
   },
   "marketing": {
       "avatar": null,
@@ -139,11 +141,12 @@ const defaultResumeData_en = {
           "CET-6 English Certificate"
       ],
       "traits": [
-          "Innovative thinking, able to come up with unique marketing ideas",
-          "Excellent communication and presentation skills",
-          "Data-driven, able to use data to guide decisions",
-          "Strong teamwork spirit, able to effectively manage projects"
-      ]
+        "Innovative thinking, able to come up with unique marketing ideas",
+        "Excellent communication and presentation skills",
+        "Data-driven, able to use data to guide decisions",
+        "Strong teamwork spirit, able to effectively manage projects"
+      ],
+      "self-evaluation": "As a Marketing graduate, I have a solid foundation in marketing theory and practical experience. I excel at analyzing market trends and developing effective marketing strategies. In digital marketing, I am proficient in using various social media platforms and analytical tools, capable of planning and executing successful online marketing campaigns. I possess excellent communication skills and innovative thinking, enabling effective collaboration with clients and team members. I remain sensitive to market dynamics and have a strong learning ability, allowing me to quickly adapt to marketing needs in different industries. I believe my professional knowledge and personal qualities will make me a valuable asset to any marketing team."
   },
   "electrical": {
       "avatar": null,
@@ -187,11 +190,12 @@ const defaultResumeData_en = {
           "Graduate Academic Scholarship"
       ],
       "traits": [
-          "Deep understanding and interest in power systems",
-          "Good teamwork skills and communication abilities",
-          "Able to learn and adapt to new technologies quickly",
-          "Innovative thinking, able to solve complex problems"
-      ]
+        "Deep understanding and interest in power systems",
+        "Good teamwork skills and communication abilities",
+        "Able to learn and adapt to new technologies quickly",
+        "Innovative thinking, able to solve complex problems"
+      ],
+      "self-evaluation": "As a Master's graduate in Electrical Engineering and Automation, I possess a solid theoretical foundation and rich practical experience. I am familiar with power system design, PLC programming, and automation control system development. Throughout my studies and work, I have demonstrated a strong passion for learning and innovation, able to quickly grasp new technologies and apply them to practical projects. I excel in teamwork and have good communication and problem-solving skills. I am passionate about the development of the power industry, especially in the fields of smart grids and renewable energy. I believe my professional knowledge and personal qualities will enable me to make significant contributions in the field of electrical engineering."
   },
   "finance": {
       "avatar": null,
@@ -235,11 +239,12 @@ const defaultResumeData_en = {
           "Third Prize, National College Financial Modeling Competition"
       ],
       "traits": [
-          "Strong interest in financial markets and sharp insights",
-          "Excellent data analysis skills and logical thinking",
-          "Good written and oral communication skills",
-          "Able to stay calm and efficient under pressure"
-      ]
+        "Strong interest in financial markets and sharp insights",
+        "Excellent data analysis skills and logical thinking",
+        "Good written and oral communication skills",
+        "Able to stay calm and efficient under pressure"
+      ],
+      "self-evaluation": "As a Finance graduate, I have a solid foundation in financial theory and practical experience. I am familiar with financial analysis, investment management, and risk control, and proficient in using various financial analysis tools and software. I have keen insights into financial markets and can quickly understand and analyze complex financial data. During my internships, I demonstrated excellent data analysis skills and logical thinking abilities. I possess good communication skills and can clearly express complex financial concepts. I maintain a high level of attention to the latest developments in the financial industry and have a passion for continuous learning. I believe my professional knowledge and personal qualities will make me an important member of any financial team."
   }
 };
 

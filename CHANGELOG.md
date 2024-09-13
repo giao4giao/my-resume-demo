@@ -1,5 +1,35 @@
 # Changelog
 
+## v0.0.6
+
+### Improvements
+- Optimized resume template rendering logic, enhancing template flexibility and customization
+- Improved default prompt text for empty fields, making the user experience more intuitive
+- Enhanced the display logic for the professional skills section, showing a more user-friendly prompt when skills are empty
+- Added a self-evaluation field, enriching the resume content
+- Optimized the text box style when editing text, improving the editing experience
+
+### User Experience
+- Improved the editing experience for the education background section, adding appropriate prompt text for empty education time and GPA fields
+- Enhanced the editing experience for the professional skills section, displaying "Please add professional skills" when empty
+- Improved the avatar addition functionality, fixing related bugs and increasing stability
+
+### PDF Generation
+- Fixed issues with missing styles in PDF generation, ensuring the generated PDF matches the preview
+
+### Internationalization
+- Updated translation files, adding new translation items to improve multi-language support completeness
+- Adjusted the positions of CHANGELOG_CN and README_CN files, optimizing the project structure
+
+### Development-related
+- Optimized the default resume data structure to ensure consistency with the latest template rendering logic
+- Fixed some issues in the advanced editing mode, improving the accuracy and reliability of data editing
+
+### Fixes
+- Resolved issues where some fields might display incorrect default text when empty
+- Fixed several bugs in the avatar addition process, improving feature stability
+- Addressed data synchronization and display issues in the advanced editing mode
+
 ## v0.0.5
 
 ### New Features

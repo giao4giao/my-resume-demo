@@ -78,6 +78,7 @@ const ResumeEditor = {
         templateConfig.sections.forEach(section => {
             if (window.sectionRenderers[section]) {
                 try {
+                    // 修改这里，传递 resumeData 给 sectionRenderers
                     html += window.sectionRenderers[section](resumeData, template, translations);
                 } catch (error) {
                     console.error(`Error rendering section ${section}:`, error);
@@ -119,12 +120,32 @@ const ResumeEditor = {
         // 更新简历名称和标题
         const nameElement = document.getElementById('name');
         const titleElement = document.getElementById('title');
-        if (nameElement) updatedResume.name = nameElement.innerText;
-        if (titleElement) updatedResume.title = titleElement.innerText;
+        if (nameElement) updatedResume.name = nameElement.innerText.trim();
+        if (titleElement) updatedResume.title = titleElement.innerText.trim();
 
-        // 更新当前简历类型的数据
+        // 获取当前简历类型的数据
         const currentData = this.getCurrentResumeData();
-        updatedResume[this.currentResumeType] = { ...updatedResume[this.currentResumeType], ...currentData };
+        
+        // 确保这些字段保持数组格式，并且不会变成空数组
+        const arrayFields = ['skills', 'awards', 'traits', 'intern-responsibilities', 'project-details'];
+        arrayFields.forEach(field => {
+            if (currentData[field]) {
+                currentData[field] = Array.isArray(currentData[field]) ? currentData[field] : [currentData[field]];
+            } else if (updatedResume[this.currentResumeType] && updatedResume[this.currentResumeType][field]) {
+                // 如果当前数据中没有这个字段，但原始数据中有，则保留原始数据
+                currentData[field] = updatedResume[this.currentResumeType][field];
+            }
+            // 如果数组为空，则删除该字段
+            if (currentData[field] && currentData[field].length === 0) {
+                delete currentData[field];
+            }
+        });
+
+        // 合并原有数据和新数据
+        updatedResume[this.currentResumeType] = {
+            ...updatedResume[this.currentResumeType],
+            ...currentData
+        };
         
         // 保存头像数据
         if (updatedResume[this.currentResumeType].avatar) {
@@ -161,9 +182,16 @@ const ResumeEditor = {
             const key = el.id || el.parentElement.id;
             if (key) {
                 if (el.tagName === 'UL') {
-                    data[key] = Array.from(el.children).map(li => li.textContent);
+                    // 对于列表项，保持数组格式
+                    data[key] = Array.from(el.children).map(li => li.textContent.trim()).filter(text => text !== '');
+                }else if (el.tagName === 'LI') {
+                    if (data[key]) {
+                        data[key].push(el.textContent.trim());
+                    }else{
+                        data[key] = [el.textContent.trim()];
+                    }
                 } else {
-                    data[key] = el.textContent;
+                    data[key] = el.textContent.trim();
                 }
             }
         });
@@ -174,6 +202,17 @@ const ResumeEditor = {
             data.avatar = avatarImg.src;
         }
         
+        // 确保所有必要的字段都存在
+        const requiredFields = ['name', 'title', 'phone', 'email', 'address', 'school', 'major', 'degree', 'edu-time', 'gpa', 'courses', 'company', 'position', 'intern-time', 'project-name', 'project-type', 'project-time'];
+        requiredFields.forEach(field => {
+            if (!data[field]) {
+                const element = document.getElementById(field);
+                if (element) {
+                    data[field] = element.textContent.trim();
+                }
+            }
+        });
+
         return data;
     },
 

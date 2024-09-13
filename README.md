@@ -2,37 +2,22 @@
 
 A simple and interactive resume builder that allows users to create, edit, and manage multiple resumes.
 
-[中文版说明](README_CN.md)
+[中文版说明](./docs/README_CN.md)
 
-## New Features (v0.0.5)
+## New Features (v0.0.6)
 
-- Optimized avatar upload and display functionality for a more intuitive user experience
-- Improved resume type selector, supporting seamless switching between different resume types
-- Enhanced internationalization support with improved multi-language switching
+- Added a self-evaluation field to enrich resume content
+- Improved default prompt text for empty fields, enhancing user experience
+- Optimized text box style for a better editing experience
+- Enhanced PDF generation to ensure consistency with preview
 
 ## Improvements
 
-- Optimized resume template rendering logic for more flexible template customization
-- Improved `ResumeEditor` component, enhancing code maintainability and extensibility
-- Optimized resume data saving and loading mechanisms for improved data consistency
-- Enhanced template selector implementation, offering more diverse resume template options
-
-## User Experience
-
-- Optimized avatar display logic, showing avatar only after successful upload without default placeholder
-- Improved editable element interaction for a more intuitive editing experience
-- Enhanced notification system for timely user feedback
-
-## Cross-platform Compatibility
-
-- Synchronized PDF download format between mobile and desktop platforms, ensuring consistent output
-
-## Development-related
-
-- Restructured JavaScript files for better modularization
-- Optimized communication mechanisms between components, improving code maintainability and extensibility
-- Updated project documentation, including README and internationalization support
-- Split long CSS files into multiple smaller files, improving style management efficiency
+- Optimized resume template rendering logic for more flexible customization
+- Improved the editing experience for education background and professional skills sections
+- Enhanced avatar addition functionality with increased stability
+- Updated translation files for better multi-language support
+- Optimized default resume data structure
 
 ## Features
 
@@ -40,10 +25,11 @@ A simple and interactive resume builder that allows users to create, edit, and m
 - Edit resume content directly on the page
 - Add and update profile picture
 - Advanced editing using JSON format
-- Download resume as PDF with improved page layout
+- Download resume as PDF with improved layout
 - Responsive design
 - Multiple resume templates and types
 - Internationalization support
+- Self-evaluation section
 
 ## Getting Started
 
@@ -85,14 +71,15 @@ Note: Due to the project structure, opening `index.html` directly in a browser w
 4. Edit the resume content by clicking on the text fields.
 5. Add or update the profile picture using the "Add/Change Avatar" button.
 6. Use the "Advanced Edit" button to modify the resume in JSON format.
-7. Save your changes using the "Save Changes" button.
-8. Download your resume as a PDF using the "Download PDF" button.
+7. Add your self-evaluation in the dedicated section.
+8. Save your changes using the "Save Changes" button.
+9. Download your resume as a PDF using the "Download PDF" button.
 
 ## Recent Updates
 
 For a full list of changes, please see the [CHANGELOG](CHANGELOG.md).
 
-For the Chinese version of the changelog, please refer to [CHANGELOG_CN](CHANGELOG_CN.md).
+For the Chinese version of the changelog, please refer to [CHANGELOG_CN](./docs/CHANGELOG_CN.md).
 
 ## Contributing
 

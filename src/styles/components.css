@@ -334,3 +334,55 @@ button:hover {
 #language-toggle:hover {
     background-color: #2980b9;
 }
+
+/* JSON 编辑器样式 */
+.json-editor-content {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.json-editor-content .hljs-attr {
+    color: #0000ff;
+}
+
+.json-editor-content .hljs-string {
+    color: #008000;
+}
+
+.json-editor-content .hljs-number {
+    color: #0000ff;
+}
+
+.json-editor-content .hljs-boolean {
+    color: #b22222;
+}
+
+.json-editor-content .hljs-null {
+    color: #808080;
+}
+
+/* 行号样式 */
+.hljs-ln {
+    border-collapse: collapse;
+}
+
+.hljs-ln td {
+    padding: 0;
+}
+
+.hljs-ln-n:before {
+    content: attr(data-line-number);
+    color: #ccc;
+    border-right: 1px solid #ccc;
+    padding-right: 5px;
+    margin-right: 5px;
+    display: inline-block;
+    text-align: right;
+    width: 30px;
+}

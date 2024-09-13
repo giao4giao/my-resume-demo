@@ -16,7 +16,7 @@ window.AdvancedEditor = {
             // 创建一个 pre 和 code 元素来包裹 JSON 字符串
             const preElement = document.createElement('pre');
             const codeElement = document.createElement('code');
-            codeElement.className = 'language-json';
+            codeElement.className = 'language-json hljs';
             codeElement.textContent = jsonString;
             preElement.appendChild(codeElement);
             
@@ -27,9 +27,21 @@ window.AdvancedEditor = {
             // 应用语法高亮
             if (typeof hljs !== 'undefined') {
                 hljs.highlightElement(codeElement);
+                // 检查行号插件是否可用
+                if (typeof hljs.lineNumbersBlock === 'function') {
+                    hljs.lineNumbersBlock(codeElement);
+                } else {
+                    console.warn('Line numbers plugin is not available. Line numbers will not be added.');
+                }
             } else {
                 console.warn('highlight.js is not loaded. Syntax highlighting will not be applied.');
             }
+
+            // 使 pre 元素可编辑
+            preElement.contentEditable = 'true';
+            preElement.style.whiteSpace = 'pre-wrap';
+            preElement.style.wordWrap = 'break-word';
+            preElement.classList.add('json-editor-content');
             
             // 更新高级编辑器标题
             const advancedEditorTitle = document.querySelector('.advanced-editor-container h2');
@@ -76,13 +88,19 @@ window.AdvancedEditor = {
         const translations = window.translations[currentLang];
 
         try {
-            const jsonContent = document.querySelector('#json-editor code').textContent;
+            const jsonContent = document.querySelector('#json-editor pre').textContent;
             const updatedResume = JSON.parse(jsonContent);
             const originalResume = window.resumeService.getResumeById(currentResumeId);
             
-            // 保留原始的头像数据
-            if (originalResume[originalResume.type] && originalResume[originalResume.type].avatar) {
-                updatedResume[updatedResume.type].avatar = originalResume[originalResume.type].avatar;
+            // 检查头像数据是否被修改
+            if (updatedResume[updatedResume.type] && updatedResume[updatedResume.type].avatar) {
+                // 如果头像数据被修改（不是截断的版本），则使用新的头像数据
+                if (!updatedResume[updatedResume.type].avatar.endsWith('...')) {
+                    console.log('New avatar data detected');
+                } else {
+                    // 如果是截断的版本，保留原始的头像数据
+                    updatedResume[updatedResume.type].avatar = originalResume[originalResume.type].avatar;
+                }
             }
             
             updatedResume.id = currentResumeId; // 确保ID保持不变

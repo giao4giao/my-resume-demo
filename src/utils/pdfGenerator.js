@@ -29,10 +29,11 @@ async function generatePDF(element) {
         for (let i = 0; i < sections.length; i++) {
             const section = sections[i];
             const canvas = await html2canvas(section, {
-                scale: 2,
+                scale: 3, // 增加缩放比例以提高清晰度
                 logging: false,
                 useCORS: true,
-                allowTaint: true
+                allowTaint: true,
+                backgroundColor: null // 设置背景为透明
             });
             const imgData = canvas.toDataURL('image/png');
             const imgWidth = contentWidth;
@@ -44,7 +45,7 @@ async function generatePDF(element) {
             }
 
             const xOffset = (pdfWidth - imgWidth) / 2; // 居中
-            pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight);
+            pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight, '', 'FAST');
             yOffset += imgHeight + 10; // 减少部分之间的间距
 
             if (i < sections.length - 1 && yOffset > pdfHeight - margins) {
@@ -72,6 +73,9 @@ function applyPDFStyles(container) {
     container.style.padding = '20px';
     container.style.boxSizing = 'border-box';
     container.style.fontSize = '12px';
+    container.style.lineHeight = '1.5';
+    container.style.color = '#000';
+    container.style.backgroundColor = '#fff';
 
     // 重置响应式样式
     const elements = container.querySelectorAll('*');
@@ -84,11 +88,42 @@ function applyPDFStyles(container) {
         el.style.position = 'static';
     });
 
+    // 恢复列表样式
+    const lists = container.querySelectorAll('ul, ol');
+    lists.forEach(list => {
+        list.style.listStyleType = 'disc'; // 使用实心圆点
+        // list.style.paddingLeft = '100px'; // 增加左内边距以对齐内容
+        list.style.paddingLeft = '10px'; // 增加左内边距以对齐内容
+        list.style.marginTop = '5px';
+        list.style.marginBottom = '5px';
+    });
+
+    const listItems = container.querySelectorAll('li');
+    listItems.forEach(item => {
+        item.style.marginBottom = '10px'; // 添加列表项之间的间距
+    });
+
+    // 添加对齐样式
+    const infoItems = container.querySelectorAll('.info-item');
+    infoItems.forEach(item => {
+        item.style.display = 'flex';
+        item.style.alignItems = 'flex-start';
+        item.style.marginBottom = '10px';
+    });
+
+    const infoLabels = container.querySelectorAll('.info-item strong');
+    infoLabels.forEach(label => {
+        label.style.width = '80px'; // 调整标签宽度
+        label.style.flexShrink = '0';
+        label.style.marginRight = '10px';
+        label.style.textAlign = 'right';
+    });
+
     // 应用特定样式
     const header = container.querySelector('.resume-header');
     if (header) {
         header.style.display = 'flex';
-        header.style.alignItems = 'center';
+        header.style.alignItems = 'center'; // 改回 center
         header.style.marginBottom = '20px';
     }
 
@@ -97,12 +132,28 @@ function applyPDFStyles(container) {
         avatar.style.width = '100px';
         avatar.style.height = '100px';
         avatar.style.marginRight = '20px';
+        avatar.style.objectFit = 'cover';
     }
 
-    const sections = container.querySelectorAll('.resume-section');
-    sections.forEach(section => {
-        section.style.marginBottom = '20px';
-    });
+    const nameTitle = container.querySelector('.name-title');
+    if (nameTitle) {
+        nameTitle.style.flex = '1'; // 添加 flex 属性
+        nameTitle.style.display = 'flex';
+        nameTitle.style.flexDirection = 'column';
+        nameTitle.style.justifyContent = 'center';
+    }
+
+    const nameTitleH1 = nameTitle.querySelector('h1');
+    if (nameTitleH1) {
+        nameTitleH1.style.fontSize = '24px'; // 调整字体大小
+        nameTitleH1.style.margin = '0 0 5px 0'; // 调整边距
+    }
+
+    const nameTitleP = nameTitle.querySelector('p');
+    if (nameTitleP) {
+        nameTitleP.style.fontSize = '16px'; // 调整字体大小
+        nameTitleP.style.margin = '0'; // 调整边距
+    }
 
     // 可以根据需要添加更多特定样式
 }
@@ -131,7 +182,15 @@ window.downloadPDF = async function() {
         addItemButtons.forEach(btn => btn.style.display = '');
 
         console.log('PDF generated, saving...');
-        pdf.save('我的简历.pdf');
+
+        // 获取当前语言
+        const currentLang = localStorage.getItem('language') || 'zh';
+        const translations = window.translations[currentLang];
+
+        // 设置文件名
+        const fileName = currentLang === 'zh' ? '我的简历.pdf' : 'My_Resume.pdf';
+
+        pdf.save(fileName);
         console.log('PDF saved');
     } catch (error) {
         console.error('生成PDF时发生错误:', error);

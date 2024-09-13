@@ -1,51 +1,30 @@
 window.addEditableListeners = function() {
     const editables = document.querySelectorAll('.editable');
+    const currentLang = localStorage.getItem('language') || 'zh';
+    const translations = window.translations[currentLang];
+
     editables.forEach(el => {
         if (!el.hasListener) {
             el.hasListener = true;
-            el.addEventListener('click', function(event) {
-                // 防止事件冒泡到父元素
-                event.stopPropagation();
-                
-                // 如果已经是输入状态，不做任何操作
-                if (this.querySelector('input')) return;
-
-                const text = this.innerText;
-                const input = document.createElement('input');
-                input.value = text;
-                this.innerText = '';
-                this.appendChild(input);
-                input.focus();
-
-                const saveChanges = () => {
-                    const newText = input.value.trim();
-                    if (newText) {
-                        this.innerText = newText;
-                    } else {
-                        // 如果新文本为空，并且是列表项，则删除该项
-                        if (this.tagName === 'LI') {
-                            this.remove();
-                        } else {
-                            this.innerText = text; // 恢复原文本
-                        }
-                    }
-                };
-
-                input.addEventListener('blur', saveChanges);
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        saveChanges();
-                    }
-                });
+            el.addEventListener('focus', function(event) {
+                // 获取当前字段的默认提示文本
+                const defaultText = translations[`add${el.id.charAt(0).toUpperCase() + el.id.slice(1)}`] || translations.addSelfEvaluation;
+                if (this.textContent.trim() === defaultText) {
+                    this.textContent = '';
+                }
+            });
+            el.addEventListener('blur', function(event) {
+                // 如果内容为空，则在失去焦点时恢复默认提示文本
+                if (this.textContent.trim() === '') {
+                    const defaultText = translations[`add${el.id.charAt(0).toUpperCase() + el.id.slice(1)}`] || translations.addSelfEvaluation;
+                    this.textContent = defaultText;
+                }
             });
         }
     });
 
     // 为可编辑列表添加新项的功能
     const editableLists = ['skills', 'intern-responsibilities', 'project-details', 'awards', 'traits'];
-    const currentLang = localStorage.getItem('language') || 'zh';
-    const translations = window.translations[currentLang];
     
     editableLists.forEach(listId => {
         const list = document.getElementById(listId);
@@ -57,8 +36,10 @@ window.addEditableListeners = function() {
             addItemBtn.addEventListener('click', function() {
                 const newItem = document.createElement('li');
                 newItem.className = 'editable';
+                newItem.contentEditable = 'true';
                 newItem.textContent = translations.clickToEdit;
                 list.appendChild(newItem);
+                // 为新添加的项绑定编辑事件监听器
                 addEditableListeners();
             });
             list.parentNode.insertBefore(addItemBtn, list.nextSibling);
